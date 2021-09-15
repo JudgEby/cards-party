@@ -1,0 +1,30 @@
+.select {
+    width: 100px;
+    padding: 5px 30px 5px 5px;
+
+    cursor: pointer;
+    appearance: none;
+    background-color: #97f5ee;
+    background-image: url("data:image/svg+xml,%3C?xml version='1.0' ?%3E%3C!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'%3E%3Csvg enable-background='new 0 0 32 32' id='Слой_1' version='1.1' viewBox='0 0 32 32' xml:space='preserve' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cpath clip-rule='evenodd' d='M27,11.106c0-0.564-0.489-1.01-1.044-0.995 H6.013c-0.887-0.024-1.38,1.07-0.742,1.702l9.999,9.9c0.394,0.39,1.031,0.376,1.429,0l9.991-9.892C26.879,11.64,27,11.388,27,11.106 z M15.984,19.591L8.418,12.1H23.55L15.984,19.591z' fill='rgb(163,26,212)' fill-rule='evenodd' id='Arrow_Drop_Down'/%3E%3Cg/%3E%3Cg/%3E%3Cg/%3E%3Cg/%3E%3Cg/%3E%3Cg/%3E%3C/svg%3E");
+    background-repeat: no-repeat,repeat;
+    background-position: right .7em top 50%, 0 0;
+    background-size: 1.5em auto, 100%;
+
+    border: 2px inset #0000ff;
+    color: #a31ad4;
+    font-weight: bold;
+}
+
+.select:focus {
+    outline: none;
+    border: 2px solid #a31ad4;
+}
+
+.option {
+    color: #c14ff6;
+    background-color: #97f5ee;
+}
+
+.option:checked {
+    background-color: #7cc9c5;
+}

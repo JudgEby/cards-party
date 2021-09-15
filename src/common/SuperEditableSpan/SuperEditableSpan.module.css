@@ -1,0 +1,13 @@
+.superSpan {
+    background:url(http://simpleicon.com/wp-content/uploads/pencil-64x64.png) no-repeat left center;
+    background-size: 16px;
+    display:inline-block;
+    vertical-align:bottom;
+    padding: 3px 3px 3px 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #a31ad4;
+    border: 2px solid rgba(217, 142, 238, 0.78);
+    border-radius: 5px;
+    margin: 10px
+}

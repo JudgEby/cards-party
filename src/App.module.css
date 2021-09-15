@@ -1,0 +1,17 @@
+
+.App {
+}
+
+.header {
+  margin: 50px 0;
+  padding: 0 50px;
+}
+
+.header *{
+  margin: 0 20px;
+}
+
+.container {
+	text-align: center;
+	font-size: 50px;
+}
