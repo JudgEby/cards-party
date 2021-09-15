@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/cards-party/static/css/main.ec11a715.chunk.css",
+    "main.js": "/cards-party/static/js/main.66c9933c.chunk.js",
+    "main.js.map": "/cards-party/static/js/main.66c9933c.chunk.js.map",
+    "runtime-main.js": "/cards-party/static/js/runtime-main.506f3b4e.js",
+    "runtime-main.js.map": "/cards-party/static/js/runtime-main.506f3b4e.js.map",
+    "static/js/2.4dbbec2f.chunk.js": "/cards-party/static/js/2.4dbbec2f.chunk.js",
+    "static/js/2.4dbbec2f.chunk.js.map": "/cards-party/static/js/2.4dbbec2f.chunk.js.map",
+    "index.html": "/cards-party/index.html",
+    "static/css/main.ec11a715.chunk.css.map": "/cards-party/static/css/main.ec11a715.chunk.css.map",
+    "static/js/2.4dbbec2f.chunk.js.LICENSE.txt": "/cards-party/static/js/2.4dbbec2f.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.506f3b4e.js",
+    "static/js/2.4dbbec2f.chunk.js",
+    "static/css/main.ec11a715.chunk.css",
+    "static/js/main.66c9933c.chunk.js"
+  ]
+}
