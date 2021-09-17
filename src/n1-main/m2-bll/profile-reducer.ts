@@ -1,4 +1,4 @@
-import { AppThunk } from '../m2-bll/store'
+import { AppThunk } from './store'
 
 const initialState = {}
 type InitialStateType = typeof initialState

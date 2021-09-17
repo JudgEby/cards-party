@@ -3,17 +3,17 @@ import thunkMiddleware, { ThunkAction } from 'redux-thunk'
 import {
 	NewPasswordActionsType,
 	newPasswordReducer,
-} from '../m3-dal/newPassword-reducer'
+} from './newPassword-reducer'
 import {
 	RegistrationActionsType,
 	registrationReducer,
-} from '../m3-dal/registration-reducer'
+} from './registration-reducer'
 import { AuthActionsType, authReducer } from './auth-reducer'
-import { ProfileActionsType, profileReducer } from '../m3-dal/profile-reducer'
+import { ProfileActionsType, profileReducer } from './profile-reducer'
 import {
 	PasswordRecoveryActionsType,
 	passwordRecoveryReducer,
-} from '../m3-dal/passwordRecovery-reducer'
+} from './passwordRecovery-reducer'
 
 const rootReducer = combineReducers({
 	auth: authReducer,

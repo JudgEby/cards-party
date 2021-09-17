@@ -1,11 +1,11 @@
-import { AppThunk } from '../m2-bll/store'
+import { AppThunk } from './store'
 
 const initialState = {}
 type InitialStateType = typeof initialState
 
-export const newPasswordReducer = (
+export const registrationReducer = (
 	state: InitialStateType = initialState,
-	action: NewPasswordActionsType
+	action: RegistrationActionsType
 ): InitialStateType => {
 	switch (action.type) {
 		case 'TEST':
@@ -20,6 +20,6 @@ const test = () => ({ type: 'TEST' } as const)
 export const testTC = (): AppThunk => dispatch => {
 	dispatch(test())
 }
-
 // types
-export type NewPasswordActionsType = ReturnType<typeof test>
+
+export type RegistrationActionsType = ReturnType<typeof test>
