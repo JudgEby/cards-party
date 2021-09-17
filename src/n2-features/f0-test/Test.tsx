@@ -1,11 +1,11 @@
 import React from 'react'
-import SuperButton from '../../common/SuperButton/SuperButton'
-import SuperCheckbox from '../../common/SuperCheckbox/SuperCheckbox'
-import SuperEditableSpan from '../../common/SuperEditableSpan/SuperEditableSpan'
-import SuperInputText from '../../common/SuperInputText/SuperInputText'
-import SuperRadio from '../../common/SuperRadio/SuperRadio'
-import SuperRange from '../../common/SuperRange/SuperRange'
-import SuperSelect from '../../common/SuperSelect/SuperSelect'
+import SuperButton from '../../n1-main/m1-ui/common/SuperButton/SuperButton'
+import SuperCheckbox from '../../n1-main/m1-ui/common/SuperCheckbox/SuperCheckbox'
+import SuperEditableSpan from '../../n1-main/m1-ui/common/SuperEditableSpan/SuperEditableSpan'
+import SuperInputText from '../../n1-main/m1-ui/common/SuperInputText/SuperInputText'
+import SuperRadio from '../../n1-main/m1-ui/common/SuperRadio/SuperRadio'
+import SuperRange from '../../n1-main/m1-ui/common/SuperRange/SuperRange'
+import SuperSelect from '../../n1-main/m1-ui/common/SuperSelect/SuperSelect'
 
 const Test = () => {
 	return (
