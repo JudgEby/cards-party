@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const instance = axios.create({
-	baseURL: 'https://social-network.samuraijs.com/api/1.1/',
+	baseURL: 'http://localhost:7542/2.0/',
 	withCredentials: true
 })
 
