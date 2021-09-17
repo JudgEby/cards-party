@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/cards-party/static/css/main.671575a8.chunk.css",
-    "main.js": "/cards-party/static/js/main.356b73dd.chunk.js",
-    "main.js.map": "/cards-party/static/js/main.356b73dd.chunk.js.map",
+    "main.js": "/cards-party/static/js/main.249ed672.chunk.js",
+    "main.js.map": "/cards-party/static/js/main.249ed672.chunk.js.map",
     "runtime-main.js": "/cards-party/static/js/runtime-main.506f3b4e.js",
     "runtime-main.js.map": "/cards-party/static/js/runtime-main.506f3b4e.js.map",
     "static/js/2.ee891d5a.chunk.js": "/cards-party/static/js/2.ee891d5a.chunk.js",
@@ -15,6 +15,6 @@
     "static/js/runtime-main.506f3b4e.js",
     "static/js/2.ee891d5a.chunk.js",
     "static/css/main.671575a8.chunk.css",
-    "static/js/main.356b73dd.chunk.js"
+    "static/js/main.249ed672.chunk.js"
   ]
 }
