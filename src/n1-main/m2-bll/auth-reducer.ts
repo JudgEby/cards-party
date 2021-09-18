@@ -1,7 +1,6 @@
 import { AppThunk } from './store'
 import { authAPI } from '../m3-dal/api'
-import { setProfileData } from './profile-reducer'
-import { AxiosError } from 'axios'
+import { clearProfileData, setProfileData } from './profile-reducer'
 
 const initialState = {
 	isAuthorized: false,
@@ -23,7 +22,6 @@ export const authReducer = (
 				isAuthorized: action.isAuthorized,
 			}
 		case 'AUTH/ERROR':
-			debugger
 			return { ...state, error: action.err }
 		default:
 			return state
@@ -75,12 +73,14 @@ export const getMe = (): AppThunk => async dispatch => {
 			})
 		)
 		dispatch(Login(true))
-	} catch (e: any) {
-		const error = e.response
-			? e.response.data.error
-			: e.message + 'more details in console'
-		dispatch(setError(error))
-	}
+	} catch (e: any) {}
+}
+export const logout = (): AppThunk => async dispatch => {
+	try {
+		await authAPI.logout()
+		dispatch(Login(false))
+		dispatch(clearProfileData())
+	} catch (e: any) {}
 }
 // types
 export type LoginAT = ReturnType<typeof Login>
