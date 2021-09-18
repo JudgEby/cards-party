@@ -6,6 +6,7 @@ import {
 } from '../../n1-main/m2-bll/profile-reducer'
 import { AppRootStateType } from '../../n1-main/m2-bll/store'
 import styles from './Profile.module.css'
+import { authAPI } from '../../n1-main/m3-dal/api'
 
 const Profile = () => {
 	const { _id, name, email, avatar, publicCardPacksCount, verified } =
@@ -27,8 +28,23 @@ const Profile = () => {
 			)
 		}
 	}, [_id, dispatch])
+
+	const onClickHandler = () => {
+		authAPI
+			.getMe()
+			.then(data => {
+				debugger
+				console.log(data)
+			})
+			.catch(error => {
+				debugger
+				console.log(error)
+			})
+	}
+
 	return (
 		<div>
+			<button onClick={onClickHandler}>+</button>
 			<div
 				className={styles.avatar}
 				style={{ background: `url(${avatar}) no-repeat center` }}
