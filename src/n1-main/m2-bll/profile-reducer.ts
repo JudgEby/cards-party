@@ -1,25 +1,35 @@
 import { AppThunk } from './store'
 
-const initialState = {}
-type InitialStateType = typeof initialState
+const initialState = {
+	_id: null as null | string,
+	name: null as null | string,
+	email: null as null | string,
+	avatar: null as null | string,
+	publicCardPacksCount: null as null | number,
+	verified: false,
+}
 
 export const profileReducer = (
-	state: InitialStateType = initialState,
+	state: ProfileStateType = initialState,
 	action: ProfileActionsType
-): InitialStateType => {
+): ProfileStateType => {
 	switch (action.type) {
-		case 'TEST':
-			return state
+		case 'PROFILE/SET-PROFILE-DATA': {
+			return { ...state, ...action.payload }
+		}
 		default:
 			return state
 	}
 }
 // actions
-const test = () => ({ type: 'TEST' } as const)
+const setProfile = (data: ProfileStateType) =>
+	({ type: 'PROFILE/SET-PROFILE-DATA', payload: { ...data } } as const)
 // thunks
-export const testTC = (): AppThunk => dispatch => {
-	dispatch(test())
-}
+export const setProfileData =
+	(data: ProfileStateType): AppThunk =>
+	dispatch => {
+		dispatch(setProfile(data))
+	}
 // types
-
-export type ProfileActionsType = ReturnType<typeof test>
+export type ProfileStateType = typeof initialState
+export type ProfileActionsType = ReturnType<typeof setProfile>
