@@ -1,86 +1,101 @@
 import { AppThunk } from './store'
 import { authAPI } from '../m3-dal/api'
+import { setProfileData } from './profile-reducer'
+import { AxiosError } from 'axios'
 
 const initialState = {
-	_id: null,
 	isAuthorized: false,
-	email: null,
-	name: null,
-	avatar: null,
-	publicCardPacksCount: 0,
-	verified: false,
-	error: ''
+	error: '',
 }
 type InitialStateType = {
-	_id: null | string,
-	isAuthorized: boolean,
-	email: null | string,
-	name: null | string,
-	avatar: null | string,
-	publicCardPacksCount: number,
-	verified: boolean
+	isAuthorized: boolean
 	error: string
 }
 
-export const authReducer = (state: InitialStateType = initialState, action: AuthActionsType): InitialStateType => {
+export const authReducer = (
+	state: InitialStateType = initialState,
+	action: AuthActionsType
+): InitialStateType => {
 	switch (action.type) {
 		case 'AUTH/LOGIN':
 			return {
 				...state,
-				isAuthorized: action.data.isAuthorized,
-				_id: action.data._id,
-				avatar: action.data.avatar,
-				name: action.data.name,
-				email: action.data.email,
-				publicCardPacksCount: action.data.publicCardPacksCount,
-				verified: action.data.verified
+				isAuthorized: action.isAuthorized,
 			}
 		case 'AUTH/ERROR':
 			debugger
-			return{...state,error:action.err}
+			return { ...state, error: action.err }
 		default:
 			return state
 	}
 }
 // actions
-const Login = (data: dataType) => ({ type: 'AUTH/LOGIN', data } as const)
-const setError = (err: string) => ({ type: 'AUTH/ERROR', err } as const )
+const Login = (isAuthorized: boolean) =>
+	({ type: 'AUTH/LOGIN', isAuthorized } as const)
+const setError = (err: string) => ({ type: 'AUTH/ERROR', err } as const)
 
 // thunks
-export const LoginTC = (loginData: loginDataType): AppThunk => dispatch => {
-	authAPI.login(loginData).then(res => {
-		let data: dataType = {
-			_id: res.data._id,
-			avatar: res.data.avatar,
-			name: res.data.name,
-			email: res.data.email,
-			publicCardPacksCount: res.data.publicCardPacksCount,
-			verified: res.data.verified,
-			isAuthorized: true
-		}
-		dispatch(Login(data))
-	})
-		.catch(e => {
-			const error = e.response ? e.response.data.error : (e.message + 'more details in console')
-			dispatch(setError(error))
-		})
+export const LoginTC =
+	(loginData: loginDataType): AppThunk =>
+	dispatch => {
+		authAPI
+			.login(loginData)
+			.then(res => {
+				let data: dataType = {
+					_id: res.data._id,
+					avatar: res.data.avatar,
+					name: res.data.name,
+					email: res.data.email,
+					publicCardPacksCount: res.data.publicCardPacksCount,
+					verified: res.data.verified,
+				}
+				dispatch(setProfileData(data))
+				dispatch(Login(true))
+			})
+			.catch(e => {
+				const error = e.response
+					? e.response.data.error
+					: e.message + 'more details in console'
+				dispatch(setError(error))
+			})
+	}
+export const getMe = (): AppThunk => async dispatch => {
+	try {
+		const res = await authAPI.getMe()
+		const { _id, email, avatar, name, publicCardPacksCount, verified } =
+			res.data
+		dispatch(
+			setProfileData({
+				_id,
+				email,
+				avatar,
+				name,
+				publicCardPacksCount,
+				verified,
+			})
+		)
+		dispatch(Login(true))
+	} catch (e: any) {
+		const error = e.response
+			? e.response.data.error
+			: e.message + 'more details in console'
+		dispatch(setError(error))
+	}
 }
-
 // types
 export type LoginAT = ReturnType<typeof Login>
 export type setErrorAT = ReturnType<typeof setError>
 export type dataType = {
-	_id: string,
-	isAuthorized: boolean,
-	email: string,
-	name: string,
-	avatar: string,
-	publicCardPacksCount: number,
+	_id: string
+	email: string
+	name: string
+	avatar: string
+	publicCardPacksCount: number
 	verified: boolean
 }
 export type loginDataType = {
-	email: string,
-	password: string,
+	email: string
+	password: string
 	rememberMe: boolean
 }
 
