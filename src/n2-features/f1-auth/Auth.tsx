@@ -8,6 +8,7 @@ import { Redirect } from 'react-router-dom'
 const Auth = () => {
 	const dispatch = useDispatch()
 	const isAuthorized = useSelector<AppRootStateType,boolean>((state) => state.auth.isAuthorized)
+	const error = useSelector<AppRootStateType,string>((state) => state.auth.error)
 	const [email, setEmail] = useState('')
 	const onEmailChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
 		setEmail(e.currentTarget.value)
@@ -35,6 +36,7 @@ const Auth = () => {
 
 		return (
 			<div className={s.login}>
+				{error?error:''}
 				<div className={s.email}>
 					<input onChange={onEmailChangeHandler} type='email' placeholder='email' />
 				</div>

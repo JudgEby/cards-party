@@ -8,7 +8,8 @@ const initialState = {
 	name: null,
 	avatar: null,
 	publicCardPacksCount: 0,
-	verified: false
+	verified: false,
+	error: ''
 }
 type InitialStateType = {
 	_id: null | string,
@@ -18,6 +19,7 @@ type InitialStateType = {
 	avatar: null | string,
 	publicCardPacksCount: number,
 	verified: boolean
+	error: string
 }
 
 export const authReducer = (state: InitialStateType = initialState, action: AuthActionsType): InitialStateType => {
@@ -28,37 +30,45 @@ export const authReducer = (state: InitialStateType = initialState, action: Auth
 				isAuthorized: action.data.isAuthorized,
 				_id: action.data._id,
 				avatar: action.data.avatar,
-				name:action.data.name,
-				email:action.data.email,
-				publicCardPacksCount:action.data.publicCardPacksCount,
-				verified:action.data.verified
+				name: action.data.name,
+				email: action.data.email,
+				publicCardPacksCount: action.data.publicCardPacksCount,
+				verified: action.data.verified
 			}
+		case 'AUTH/ERROR':
+			debugger
+			return{...state,error:action.err}
 		default:
 			return state
 	}
 }
 // actions
-const Login = (data: dataType) =>
-	({ type: 'AUTH/LOGIN', data } as const)
+const Login = (data: dataType) => ({ type: 'AUTH/LOGIN', data } as const)
+const setError = (err: string) => ({ type: 'AUTH/ERROR', err } as const )
 
 // thunks
-export const LoginTC = (loginData:loginDataType): AppThunk => dispatch => {
+export const LoginTC = (loginData: loginDataType): AppThunk => dispatch => {
 	authAPI.login(loginData).then(res => {
-		let data:dataType = {
-			_id:res.data._id,
-			avatar:res.data.avatar,
-			name:res.data.name,
-			email:res.data.email,
-			publicCardPacksCount:res.data.publicCardPacksCount,
-			verified:res.data.verified,
-			isAuthorized:true
+		let data: dataType = {
+			_id: res.data._id,
+			avatar: res.data.avatar,
+			name: res.data.name,
+			email: res.data.email,
+			publicCardPacksCount: res.data.publicCardPacksCount,
+			verified: res.data.verified,
+			isAuthorized: true
 		}
 		dispatch(Login(data))
 	})
-
+		.catch(e => {
+			const error = e.response ? e.response.data.error : (e.message + 'more details in console')
+			dispatch(setError(error))
+		})
 }
 
 // types
+export type LoginAT = ReturnType<typeof Login>
+export type setErrorAT = ReturnType<typeof setError>
 export type dataType = {
 	_id: string,
 	isAuthorized: boolean,
@@ -69,9 +79,9 @@ export type dataType = {
 	verified: boolean
 }
 export type loginDataType = {
-	email:string,
-	password:string,
-	rememberMe:boolean
+	email: string,
+	password: string,
+	rememberMe: boolean
 }
 
-export type AuthActionsType = ReturnType<typeof Login>
+export type AuthActionsType = LoginAT | setErrorAT
