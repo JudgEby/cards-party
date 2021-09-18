@@ -30,6 +30,18 @@ export const setProfileData =
 	dispatch => {
 		dispatch(setProfile(data))
 	}
+export const clearProfileData = (): AppThunk => dispatch => {
+	dispatch(
+		setProfile({
+			_id: null,
+			name: null,
+			email: null,
+			avatar: null,
+			publicCardPacksCount: null,
+			verified: false,
+		})
+	)
+}
 // types
 export type SetProfile = ReturnType<typeof setProfile>
 export type ProfileStateType = typeof initialState
