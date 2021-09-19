@@ -17,6 +17,7 @@ const Auth = () => {
 	const error = useSelector<AppRootStateType, string>(
 		state => state.auth.error
 	)
+	const isLoading = useSelector<AppRootStateType,boolean>(state => state.auth.isLoading)
 	const [email, setEmail] = useState('')
 
 	const onEmailChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -82,7 +83,7 @@ const Auth = () => {
 					<NavLink className={s.recovery} to={'/password/recovery'}>Forgot password</NavLink>
 				</div>
 				<div className={s.loginButtonContainer}>
-					<button className={s.loginButton} type='submit'>Login</button>
+					<button className={s.loginButton} disabled={isLoading?true:false} type='submit'>Login</button>
 				</div>
 				<div className={s.signUpContainer}>
 					<span>Don't have an account</span>
