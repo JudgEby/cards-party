@@ -22,7 +22,7 @@ export const profileReducer = (
 	}
 }
 // actions
-const setProfile = (data: ProfileStateType) =>
+export const setProfile = (data: ProfileStateType) =>
 	({ type: 'PROFILE/SET-PROFILE-DATA', payload: { ...data } } as const)
 // thunks
 export const setProfileData =
@@ -30,6 +30,19 @@ export const setProfileData =
 	dispatch => {
 		dispatch(setProfile(data))
 	}
+export const clearProfileData = (): AppThunk => dispatch => {
+	dispatch(
+		setProfile({
+			_id: null,
+			name: null,
+			email: null,
+			avatar: null,
+			publicCardPacksCount: null,
+			verified: false,
+		})
+	)
+}
 // types
+export type SetProfile = ReturnType<typeof setProfile>
 export type ProfileStateType = typeof initialState
-export type ProfileActionsType = ReturnType<typeof setProfile>
+export type ProfileActionsType = SetProfile

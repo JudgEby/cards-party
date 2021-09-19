@@ -7,14 +7,18 @@ import {
 import { AppRootStateType } from '../../n1-main/m2-bll/store'
 import styles from './Profile.module.css'
 import { authAPI } from '../../n1-main/m3-dal/api'
+import { Redirect } from 'react-router-dom'
 
 const Profile = () => {
 	const { _id, name, email, avatar, publicCardPacksCount, verified } =
 		useSelector<AppRootStateType, ProfileStateType>(state => state.profile)
+	const isAuthorized = useSelector<AppRootStateType, boolean>(
+		state => state.auth.isAuthorized
+	)
 	const dispatch = useDispatch()
 
 	useEffect(() => {
-		if (!_id) {
+		if (!isAuthorized) {
 			dispatch(
 				setProfileData({
 					_id: '1234',
@@ -29,22 +33,12 @@ const Profile = () => {
 		}
 	}, [_id, dispatch])
 
-	const onClickHandler = () => {
-		authAPI
-			.getMe()
-			.then(data => {
-				debugger
-				console.log(data)
-			})
-			.catch(error => {
-				debugger
-				console.log(error)
-			})
+	if (!isAuthorized) {
+		return <Redirect to={'/login'} />
 	}
 
 	return (
 		<div>
-			<button onClick={onClickHandler}>+</button>
 			<div
 				className={styles.avatar}
 				style={{ background: `url(${avatar}) no-repeat center` }}

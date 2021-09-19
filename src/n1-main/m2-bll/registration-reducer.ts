@@ -1,6 +1,10 @@
 import { AppThunk } from './store'
+import { authAPI } from '../m3-dal/api'
 
-const initialState = {}
+const initialState = {
+	isRegistered: false,
+	error: null as null | string
+}
 type InitialStateType = typeof initialState
 
 export const registrationReducer = (
@@ -8,18 +12,26 @@ export const registrationReducer = (
 	action: RegistrationActionsType
 ): InitialStateType => {
 	switch (action.type) {
-		case 'TEST':
-			return state
+		case 'REGISTRATION/ERROR':
+			return { ...state, error: action.error }
+		case 'REGISTRATION/REGISTER':
+			return { ...state, isRegistered: action.isRegistered }
 		default:
 			return state
 	}
 }
 // actions
-const test = () => ({ type: 'TEST' } as const)
+export const setError = (error: string | null) => ({ type: 'REGISTRATION/ERROR', error } as const)
+const register = (isRegistered: boolean) => ({ type: 'REGISTRATION/REGISTER', isRegistered } as const)
 // thunks
-export const testTC = (): AppThunk => dispatch => {
-	dispatch(test())
+export const registerTC = (email: string, password: string): AppThunk => async dispatch => {
+	try {
+		await authAPI.register(email, password)
+		dispatch(register(true))
+	} catch (e: any) {
+		dispatch(setError(e.response.data.error))
+	}
 }
 // types
 
-export type RegistrationActionsType = ReturnType<typeof test>
+export type RegistrationActionsType = ReturnType<typeof setError> | ReturnType<typeof register>
