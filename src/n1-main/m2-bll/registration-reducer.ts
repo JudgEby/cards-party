@@ -29,7 +29,11 @@ export const registerTC = (email: string, password: string): AppThunk => async d
 		await authAPI.register(email, password)
 		dispatch(register(true))
 	} catch (e: any) {
-		dispatch(setError(e.response.data.error))
+		if (e.response) {
+			dispatch(setError(e.response.data.error))
+		} else {
+			dispatch(setError(e.message))
+		}
 	}
 }
 // types

@@ -52,7 +52,7 @@ const Registration = () => {
 				<div><input type='password' placeholder='confirm password' value={checkPassword}
 								onChange={onChangeCheckPassword} /></div>
 				<div>
-					<SuperButton className={s.regBtn} type="button" onClick={abortRegistration}>Cancel</SuperButton>
+					<SuperButton className={s.regBtn} type='button' onClick={abortRegistration}>Cancel</SuperButton>
 					<SuperButton className={s.regBtn} type='submit'>Register</SuperButton>
 				</div>
 				{error && <div className={s.err}>{error}</div>}
