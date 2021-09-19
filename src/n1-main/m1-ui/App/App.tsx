@@ -32,7 +32,7 @@ const App = () => {
 					/>
 					<Route
 						exact
-						path={'/password/new'}
+						path={'/password/new/:token?'}
 						render={() => <NewPassword />}
 					/>
 					<Route exact path={'/test'} render={() => <Test />} />
