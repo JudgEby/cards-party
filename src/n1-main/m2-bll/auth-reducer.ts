@@ -5,10 +5,12 @@ import { clearProfileData, setProfileData } from './profile-reducer'
 const initialState = {
 	isAuthorized: false,
 	error: '',
+	isLoading:false
 }
 type InitialStateType = {
 	isAuthorized: boolean
 	error: string
+	isLoading:boolean
 }
 
 export const authReducer = (
@@ -23,6 +25,8 @@ export const authReducer = (
 			}
 		case 'AUTH/ERROR':
 			return { ...state, error: action.err }
+		case 'AUTH/IS-LOADING':
+			return {...state,isLoading:action.isLoading}
 		default:
 			return state
 	}
@@ -31,11 +35,13 @@ export const authReducer = (
 const Login = (isAuthorized: boolean) =>
 	({ type: 'AUTH/LOGIN', isAuthorized } as const)
 const setError = (err: string) => ({ type: 'AUTH/ERROR', err } as const)
+export const setIsLoading = (isLoading:boolean) => ({type:'AUTH/IS-LOADING',isLoading}as const )
 
 // thunks
 export const LoginTC =
 	(loginData: loginDataType): AppThunk =>
 	dispatch => {
+		dispatch(setIsLoading(true))
 		authAPI
 			.login(loginData)
 			.then(res => {
@@ -49,12 +55,14 @@ export const LoginTC =
 				}
 				dispatch(setProfileData(data))
 				dispatch(Login(true))
+				dispatch(setIsLoading(false))
 			})
 			.catch(e => {
 				const error = e.response
 					? e.response.data.error
 					: e.message + 'more details in console'
 				dispatch(setError(error))
+				dispatch(setIsLoading(false))
 			})
 	}
 export const getMe = (): AppThunk => async dispatch => {
@@ -77,14 +85,19 @@ export const getMe = (): AppThunk => async dispatch => {
 }
 export const logout = (): AppThunk => async dispatch => {
 	try {
+		dispatch(setIsLoading(true))
 		await authAPI.logout()
 		dispatch(Login(false))
 		dispatch(clearProfileData())
-	} catch (e: any) {}
+		dispatch(setIsLoading(false))
+	} catch (e: any) {
+		dispatch(setIsLoading(false))
+	}
 }
 // types
 export type LoginAT = ReturnType<typeof Login>
 export type setErrorAT = ReturnType<typeof setError>
+export type setIsLoadingAT = ReturnType<typeof setIsLoading>
 export type dataType = {
 	_id: string
 	email: string
@@ -99,4 +112,4 @@ export type loginDataType = {
 	rememberMe: boolean
 }
 
-export type AuthActionsType = LoginAT | setErrorAT
+export type AuthActionsType = LoginAT | setErrorAT | setIsLoadingAT

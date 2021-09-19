@@ -1,5 +1,6 @@
 import { AppThunk } from './store'
 import { authAPI } from '../m3-dal/api'
+import { setIsLoading } from './auth-reducer'
 
 const initialState = {
 	isRegistered: false,
