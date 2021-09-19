@@ -31,4 +31,10 @@ export const authAPI = {
 			{ withCredentials: true }
 		)
 	},
+	sendNewPassword(password: string, resetPasswordToken: string) {
+		return instance.post('/auth/set-new-password', {
+			password,
+			resetPasswordToken,
+		})
+	},
 }

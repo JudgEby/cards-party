@@ -1,6 +1,10 @@
 import { AppThunk } from './store'
+import { authAPI } from '../m3-dal/api'
 
-const initialState = {}
+const initialState = {
+	newPasswordSendingSuccess: false,
+	newPasswordSendingError: null as null | string,
+}
 type InitialStateType = typeof initialState
 
 export const newPasswordReducer = (
@@ -8,18 +12,49 @@ export const newPasswordReducer = (
 	action: NewPasswordActionsType
 ): InitialStateType => {
 	switch (action.type) {
-		case 'TEST':
-			return state
+		case 'NEW-PASSWORD/SET-NEW-PASSWORD-SENDING-SUCCESS':
+		case 'NEW-PASSWORD/SET-NEW-PASSWORD-SENDING-ERROR': {
+			return { ...state, ...action.payload }
+		}
 		default:
 			return state
 	}
 }
 // actions
-const test = () => ({ type: 'TEST' } as const)
+const setNewPasswordSendingSuccess = (newPasswordSendingSuccess: boolean) =>
+	({
+		type: 'NEW-PASSWORD/SET-NEW-PASSWORD-SENDING-SUCCESS',
+		payload: { newPasswordSendingSuccess },
+	} as const)
+const setNewPasswordSendingError = (newPasswordSendingError: null | string) =>
+	({
+		type: 'NEW-PASSWORD/SET-NEW-PASSWORD-SENDING-ERROR',
+		payload: { newPasswordSendingError },
+	} as const)
+
 // thunks
-export const testTC = (): AppThunk => dispatch => {
-	dispatch(test())
-}
+export const sendNewPassword =
+	(password: string, resetPasswordToken: string): AppThunk =>
+	async dispatch => {
+		try {
+			await authAPI.sendNewPassword(password, resetPasswordToken)
+			dispatch(setNewPasswordSendingSuccess(true))
+			dispatch(setNewPasswordSendingError(null))
+		} catch (e: any) {
+			if (e.response) {
+				dispatch(setNewPasswordSendingError(e.response.data.error))
+			} else {
+				dispatch(
+					setNewPasswordSendingError(
+						'Something went wrong. Try again later.'
+					)
+				)
+			}
+			dispatch(setNewPasswordSendingSuccess(false))
+		}
+	}
 
 // types
-export type NewPasswordActionsType = ReturnType<typeof test>
+export type NewPasswordActionsType =
+	| ReturnType<typeof setNewPasswordSendingSuccess>
+	| ReturnType<typeof setNewPasswordSendingError>

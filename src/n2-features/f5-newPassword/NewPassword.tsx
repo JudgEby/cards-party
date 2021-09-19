@@ -1,7 +1,17 @@
 import React, { ChangeEvent, useState } from 'react'
-import { NavLink, useParams } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { NavLink, Redirect, useParams } from 'react-router-dom'
+import { AppRootStateType } from '../../n1-main/m2-bll/store'
+import { sendNewPassword } from '../../n1-main/m2-bll/newPassword-reducer'
 
 const NewPassword = () => {
+	const dispatch = useDispatch()
+	const newPasswordSendingSuccess = useSelector<AppRootStateType, boolean>(
+		state => state.newPassword.newPasswordSendingSuccess
+	)
+	const newPasswordSendingError = useSelector<AppRootStateType, null | string>(
+		state => state.newPassword.newPasswordSendingError
+	)
 	const [newPasswordValue, setNewPasswordValue] = useState('')
 	const [confirmPasswordValue, setConfirmPasswordValue] = useState('')
 	const [isPasswordsMatch, setIsPasswordsMatch] = useState(true)
@@ -19,7 +29,7 @@ const NewPassword = () => {
 
 	//валидация 6 символов и больше
 	const checkIsPasswordsValid = (newPassword: string) => {
-		setIsPasswordValid(newPassword.length >= 6)
+		setIsPasswordValid(newPassword.length >= 8)
 	}
 
 	const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -28,8 +38,15 @@ const NewPassword = () => {
 			setConfirmPasswordValue(e.target.value)
 	}
 
-	const sendNewPassword = () => {
-		token && isPasswordValid && isPasswordsMatch && console.log('111')
+	const sendNewPasswordHandler = () => {
+		token &&
+			isPasswordValid &&
+			isPasswordsMatch &&
+			dispatch(sendNewPassword(confirmPasswordValue, token))
+	}
+
+	if (newPasswordSendingSuccess) {
+		return <Redirect to={'/login'} />
 	}
 
 	return (
@@ -55,7 +72,7 @@ const NewPassword = () => {
 				/>
 				{isPasswordValid !== null && !isPasswordValid && (
 					<div style={{ color: 'red' }}>
-						Password must be more then 5 character
+						Password must be more then 7 character
 					</div>
 				)}
 			</div>
@@ -76,8 +93,11 @@ const NewPassword = () => {
 			</div>
 
 			<div>
-				<button onClick={sendNewPassword}>Send New password</button>
+				<button onClick={sendNewPasswordHandler}>Send New password</button>
 			</div>
+			{newPasswordSendingError && (
+				<div style={{ color: 'red' }}>{newPasswordSendingError}</div>
+			)}
 		</div>
 	)
 }
