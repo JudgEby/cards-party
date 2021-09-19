@@ -6,6 +6,7 @@ import { Redirect } from 'react-router-dom'
 import { registerTC, setError } from '../../n1-main/m2-bll/registration-reducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppRootStateType } from '../../n1-main/m2-bll/store'
+import Loader from '../../n1-main/m1-ui/common/Loader/Loader'
 
 const Registration = () => {
 	const [login, setLogin] = useState<string>('')
@@ -14,6 +15,7 @@ const Registration = () => {
 
 	const isRegistered = useSelector<AppRootStateType, boolean>(state => state.registration.isRegistered)
 	const error = useSelector<AppRootStateType, null | string>(state => state.registration.error)
+	const isLoading = useSelector<AppRootStateType, boolean>(state => state.auth.isLoading)
 	const dispatch = useDispatch()
 
 	const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
@@ -53,10 +55,11 @@ const Registration = () => {
 								onChange={onChangeCheckPassword} /></div>
 				<div>
 					<SuperButton className={s.regBtn} type='button' onClick={abortRegistration}>Cancel</SuperButton>
-					<SuperButton className={s.regBtn} type='submit'>Register</SuperButton>
+					<SuperButton disabled={isLoading} className={s.regBtn} type='submit'>Register</SuperButton>
 				</div>
 				{error && <div className={s.err}>{error}</div>}
 			</form>
+			{isLoading && <Loader />}
 		</div>
 	)
 }

@@ -27,6 +27,8 @@ const register = (isRegistered: boolean) => ({ type: 'REGISTRATION/REGISTER', is
 // thunks
 export const registerTC = (email: string, password: string): AppThunk => async dispatch => {
 	try {
+		dispatch(setIsLoading(true))
+		dispatch(setError(null))
 		await authAPI.register(email, password)
 		dispatch(register(true))
 	} catch (e: any) {
@@ -35,6 +37,8 @@ export const registerTC = (email: string, password: string): AppThunk => async d
 		} else {
 			dispatch(setError(e.message))
 		}
+	} finally {
+		dispatch(setIsLoading(false))
 	}
 }
 // types
