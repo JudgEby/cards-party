@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
 	getMe,
 	loginDataType,
-	LoginTC,
+	LoginTC
 } from '../../n1-main/m2-bll/auth-reducer'
 import { AppRootStateType } from '../../n1-main/m2-bll/store'
-import { Redirect } from 'react-router-dom'
+import { NavLink, Redirect } from 'react-router-dom'
 
 const Auth = () => {
 	const dispatch = useDispatch()
@@ -18,14 +18,19 @@ const Auth = () => {
 		state => state.auth.error
 	)
 	const [email, setEmail] = useState('')
+
 	const onEmailChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
 		setEmail(e.currentTarget.value)
 	}
+
 	const [password, setPassword] = useState('')
+
 	const onPasswordChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
 		setPassword(e.currentTarget.value)
 	}
+
 	const [rememberMe, setRememberMe] = useState(false)
+
 	const onRememberMeChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
 		setRememberMe(e.currentTarget.checked)
 	}
@@ -40,7 +45,7 @@ const Auth = () => {
 		const loginData: loginDataType = {
 			email,
 			password,
-			rememberMe,
+			rememberMe
 		}
 		dispatch(LoginTC(loginData))
 	}
@@ -50,28 +55,44 @@ const Auth = () => {
 	}
 
 	return (
-		<div className={s.login}>
-			{error ? error : ''}
-			<div className={s.email}>
-				<input
-					onChange={onEmailChangeHandler}
-					type='email'
-					placeholder='email'
-				/>
+		<form onSubmit={Login}>
+			<div className={s.login}>
+				<h3>Login</h3>
+				{error ? error : ''}
+				<div className={s.emailContainer}>
+					<input
+						className={s.email}
+						onChange={onEmailChangeHandler}
+						type='email'
+						placeholder='email'
+					/>
+				</div>
+				<div className={s.passwordContainer}>
+					<input
+						className={s.password}
+						onChange={onPasswordChangeHandler}
+						type='password'
+						placeholder='password'
+					/>
+				</div>
+				<div className={s.rememberMeContainer}>
+					<input className={s.rememberMe} onChange={onRememberMeChangeHandler} type='checkbox' />
+				</div>
+				<div className={s.recoveryContainer}>
+					<NavLink className={s.recovery} to={'/password/recovery'}>Forgot password</NavLink>
+				</div>
+				<div className={s.loginButtonContainer}>
+					<button className={s.loginButton} type='submit'>Login</button>
+				</div>
+				<div className={s.signUpContainer}>
+					<span>Don't have an account</span>
+					<div className={s.SignUpContainer}>
+						<NavLink className={s.SignUp} to={'/registration'}> Sign Up</NavLink>
+					</div>
 			</div>
-			<div className={s.password}>
-				<input
-					onChange={onPasswordChangeHandler}
-					type='password'
-					placeholder='password'
-				/>
-			</div>
-			<div className={s.rememberMe}>
-				<input onChange={onRememberMeChangeHandler} type='checkbox' />
-			</div>
-			<button onClick={Login}>Login</button>
 		</div>
-	)
+</form>
+)
 }
 
 export default Auth
