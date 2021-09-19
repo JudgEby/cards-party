@@ -20,6 +20,11 @@ const test = () => ({ type: 'TEST' } as const)
 export const testTC = (): AppThunk => dispatch => {
 	dispatch(test())
 }
+export const sendPasswordRecovery =
+	(email: string): AppThunk =>
+	dispatch => {
+		console.log(email)
+	}
 // types
 
 export type PasswordRecoveryActionsType = ReturnType<typeof test>
