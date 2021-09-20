@@ -21,3 +21,11 @@
 	margin: 20px 0 0 20px;
 	font-size: 18px;
 }
+.link:hover {
+	color: black;
+	opacity: 0.5;
+}
+
+.active {
+	color: #af0b2d;
+}
