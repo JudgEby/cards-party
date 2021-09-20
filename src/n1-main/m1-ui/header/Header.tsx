@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppRootStateType } from '../../m2-bll/store'
 import { logout } from '../../m2-bll/auth-reducer'
+import menu from "../../../Media/menu/menu.png"
 
 const Header = () => {
 	const dispatch = useDispatch()
@@ -16,18 +17,19 @@ const Header = () => {
 	}
 	return (
 		<header className={styles.header}>
-			<NavLink to={'/'}>Home</NavLink>
+			<NavLink to={'/'} className={styles.link}>Home</NavLink>
 			{isAuthorized ? (
 				<button onClick={logoutHandler}>Logout</button>
 			) : (
-				<NavLink to={'/login'}>Login</NavLink>
+				<NavLink to={'/login'} className={styles.link}>Login</NavLink>
 			)}
-			<NavLink to={'/registration'}>Registration</NavLink>
-			<NavLink to={'/profile'}>Profile</NavLink>
-			<NavLink to={'/404'}>404</NavLink>
-			<NavLink to={'/password/recovery'}>Password Recovery</NavLink>
-			<NavLink to={'/password/new'}>New Password</NavLink>
-			<NavLink to={'/test'}>Test</NavLink>
+			<NavLink to={'/registration'} className={styles.link}>Registration</NavLink>
+			<NavLink to={'/profile'} className={styles.link}>Profile</NavLink>
+			<NavLink to={'/404'} className={styles.link}>404</NavLink>
+			<NavLink to={'/password/recovery'} className={styles.link}>Password Recovery</NavLink>
+			<NavLink to={'/password/new'} className={styles.link}>New Password</NavLink>
+			<NavLink to={'/test'} className={styles.link}>Test</NavLink>
+			<div><img src={menu} className={styles.block} alt={menu}/></div>
 		</header>
 	)
 }

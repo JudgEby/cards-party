@@ -1,11 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import s from './Auth.module.css'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-	getMe,
-	loginDataType,
-	LoginTC
-} from '../../n1-main/m2-bll/auth-reducer'
+import {getMe,loginDataType,LoginTC} from '../../n1-main/m2-bll/auth-reducer'
 import { AppRootStateType } from '../../n1-main/m2-bll/store'
 import { NavLink, Redirect } from 'react-router-dom'
 
