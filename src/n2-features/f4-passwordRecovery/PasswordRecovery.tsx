@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, KeyboardEvent } from 'react'
+import React, { ChangeEvent, useState, KeyboardEvent, KeyboardEventHandler } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { sendPasswordRecovery } from '../../n1-main/m2-bll/passwordRecovery-reducer'
 import { AppRootStateType } from '../../n1-main/m2-bll/store'
