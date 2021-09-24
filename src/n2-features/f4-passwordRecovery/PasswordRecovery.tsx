@@ -2,6 +2,8 @@ import React, { ChangeEvent, useState, KeyboardEvent } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { sendPasswordRecovery } from '../../n1-main/m2-bll/passwordRecovery-reducer'
 import { AppRootStateType } from '../../n1-main/m2-bll/store'
+import s from './PasswordRecovery.module.css'
+import {NavLink} from "react-router-dom";
 
 const PasswordRecovery = () => {
 	const recoveryError = useSelector<AppRootStateType, null | string>(
@@ -35,16 +37,26 @@ const PasswordRecovery = () => {
 	}
 
 	return (
-		<div>
-			<div>PasswordRecovery</div>
-			<input
-				type='text'
-				value={inputValue}
-				onChange={onChangeInputHandler}
-				onKeyDown={onPressEnterInputHandler}
-			/>
-			<button onClick={onClickButtonHandler}>Send</button>
+
+		<div className={s.passwordRecoveryContainer}>
+			<h4>Forgot your password?</h4>
+			<div className={s.inputField}>
+				<input
+					type='text'
+					value={inputValue}
+					onChange={onChangeInputHandler}
+					onKeyDown={onPressEnterInputHandler}
+				/>
+				<p>Enter your email address and we will send you further instructions</p>
+			</div>
+
+			<div className={s.positionBtn}>
+			<button className={s.sendButton} onClick={onClickButtonHandler}>Send</button>
 			{recoveryError && <div style={{ color: 'red' }}>{recoveryError}</div>}
+
+			<p>If you remember your password</p>
+			<NavLink to="/login" className={s.footerBtn}>Try again</NavLink>
+			</div>
 		</div>
 	)
 }

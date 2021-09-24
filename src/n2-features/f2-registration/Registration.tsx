@@ -46,26 +46,21 @@ const Registration = () => {
 	}
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<div className={s.registrationContainer}>
-				<h4>Sign Up</h4>
-				<div className={s.inputFields}>
-					<SuperInputText placeholder='email' value={login}
-																				  onChangeText={setLogin} />
-					<input type='password' placeholder='password' value={password}
-																	  onChange={onChangePassword} />
-					<input type='password' placeholder='confirm password'
-																	  value={checkPassword}
-																	  onChange={onChangeCheckPassword} />
-				</div>
-				<div className={s.button}>
-					<SuperButton className={s.btnCancelRegister} type='button' onClick={abortRegistration}>Cancel</SuperButton>
-					<SuperButton disabled={isLoading} className={s.btnCancelRegister} type='submit'>Register</SuperButton>
+		<div>
+			<h4>Sign Up</h4>
+			<form onSubmit={handleSubmit}>
+				<div><SuperInputText placeholder='email' value={login} onChangeText={setLogin} /></div>
+				<div><input type='password' placeholder='password' value={password} onChange={onChangePassword} /></div>
+				<div><input type='password' placeholder='confirm password' value={checkPassword}
+								onChange={onChangeCheckPassword} /></div>
+				<div>
+					<SuperButton className={s.regBtn} type='button' onClick={abortRegistration}>Cancel</SuperButton>
+					<SuperButton disabled={isLoading} className={s.regBtn} type='submit'>Register</SuperButton>
 				</div>
 				{error && <div className={s.err}>{error}</div>}
-				{isLoading && <Loader />}
-			</div>
-		</form>
+			</form>
+			{isLoading && <Loader />}
+		</div>
 	)
 }
 
