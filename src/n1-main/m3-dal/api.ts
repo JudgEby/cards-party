@@ -1,15 +1,19 @@
 import axios from 'axios'
 import { loginDataType } from '../m2-bll/auth-reducer'
 
-const instance = axios.create({
+const instance2 = axios.create({
 	baseURL: 'http://localhost:7542/2.0/',
 	withCredentials: true,
 })
 
-const instanc2 = axios.create({
+const instance = axios.create({
 	baseURL: 'https://neko-back.herokuapp.com/2.0/',
 	withCredentials: true,
 })
+
+const linkInRecoverEmailToLocal = 'http://localhost:3000/#/password/new/$token$'
+const linkInRecoverEmailToGithubPages =
+	'https://judgeby.github.io/cards-party/#/password/new/$token$'
 
 export const authAPI = {
 	getMe() {
@@ -31,7 +35,7 @@ export const authAPI = {
 			{
 				email,
 				from: 'Best of the best',
-				message: `<div style='background-color: lime; padding: 15px'>password recovery link: <a href='http://localhost:3000/#/password/new/$token$'>link</a></div>`,
+				message: `<div style='background-color: lime; padding: 15px'>password recovery link: <a href='${linkInRecoverEmailToGithubPages}$token$'>link</a></div>`,
 			},
 			{ withCredentials: true }
 		)
