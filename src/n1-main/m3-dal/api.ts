@@ -1,12 +1,12 @@
 import axios from 'axios'
 import { loginDataType } from '../m2-bll/auth-reducer'
 
-const instance2 = axios.create({
+const instance = axios.create({
 	baseURL: 'http://localhost:7542/2.0/',
 	withCredentials: true,
 })
 
-const instance = axios.create({
+const instanc2 = axios.create({
 	baseURL: 'https://neko-back.herokuapp.com/2.0/',
 	withCredentials: true,
 })
