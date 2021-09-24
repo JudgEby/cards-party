@@ -1,7 +1,68 @@
+/*
 .regBtn {
     margin: 10px;
 }
 
 .err {
     color: red;
+}*/
+
+.registrationContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 25px;
+    box-sizing: border-box;
+    height: 540px;
+    max-width: 415px;
+    width: 100%;
+    border-radius: 10px;
+    background-color: #F9F9FE;
+    margin: 10px auto 0;
+}
+.inputFields {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+input {
+    margin-top: 30px ;
+}
+
+.button {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 40px
+}
+.btnCancelRegister {
+    height: 36px;
+    max-width: 125px;
+    width: 100%;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #21268F;
+    font-family: SF UI Display, sans-serif;
+    opacity: 0.8;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+    background-color: #D7D8EF;
+    transition: .2s;
+    cursor: pointer;
+}
+
+.btnCancelRegister:hover {
+    background-color: #c0c1dc;
+}
+
+.btnCancelRegister:hover {
+    opacity: .8;
+}
+.btnCancelRegister:active {
+    background-color: #81839e;
+}
+.btnCancelRegister[disabled] {
+    opacity: .8;
+    cursor: none;
 }
