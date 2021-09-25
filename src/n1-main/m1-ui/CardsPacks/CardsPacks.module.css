@@ -1,0 +1,14 @@
+
+.PacksParams{
+    border: 1px solid red;
+    width: 100%;
+    display: flex;
+}
+.PacksContainer{
+    border: 1px solid lime;
+    width: 100%;
+}
+.Pack{
+    width: 100%;
+    display: flex;
+}

@@ -38,13 +38,14 @@ const Auth = () => {
 		}
 	}, [isAuthorized])
 
-	const Login = () => {
+	const Login = (e:any) => {
 		const loginData: loginDataType = {
 			email,
 			password,
 			rememberMe
 		}
 		dispatch(LoginTC(loginData))
+		e.preventDefault()
 	}
 
 	if (isAuthorized) {
@@ -52,7 +53,7 @@ const Auth = () => {
 	}
 
 	return (
-		<form onSubmit={Login} className={s.authPageContainer}>
+		<form  onSubmit={Login} className={s.authPageContainer}>
 			<div className={s.login}>
 				<h3>Login</h3>
 				{error ? error : ''}

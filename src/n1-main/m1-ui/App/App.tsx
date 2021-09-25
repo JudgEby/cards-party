@@ -9,6 +9,7 @@ import Profile from '../../../n2-features/f3-profile/Profile'
 import Error404 from '../../../n2-features/f6-404/Error404'
 import PasswordRecovery from '../../../n2-features/f4-passwordRecovery/PasswordRecovery'
 import NewPassword from '../../../n2-features/f5-newPassword/NewPassword'
+import { CardsPacks } from '../CardsPacks/CardsPacks'
 
 const App = () => {
 	return (
@@ -36,6 +37,7 @@ const App = () => {
 						render={() => <NewPassword />}
 					/>
 					<Route exact path={'/test'} render={() => <Test />} />
+					<Route path={'/packs'} render={() => <CardsPacks/>} />
 					<Redirect from={'*'} to={'/404'} />
 				</Switch>
 			</div>

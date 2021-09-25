@@ -14,6 +14,7 @@ import {
 	PasswordRecoveryActionsType,
 	passwordRecoveryReducer,
 } from './passwordRecovery-reducer'
+import { CardsPacksReducer } from './cardsPacks-reducer'
 
 const rootReducer = combineReducers({
 	auth: authReducer,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
 	registration: registrationReducer,
 	profile: profileReducer,
 	passwordRecovery: passwordRecoveryReducer,
+	CardsPacks:CardsPacksReducer
 })
 
 export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware))
