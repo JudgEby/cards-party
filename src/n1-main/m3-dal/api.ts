@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { loginDataType } from '../m2-bll/auth-reducer'
+import { authServerEndpoints, cardsServerEndpoints } from './endpoints'
 
 const instance = axios.create({
 	baseURL: 'http://localhost:7542/2.0/',
@@ -17,16 +18,16 @@ const linkInRecoverEmailToGithubPages =
 
 export const authAPI = {
 	getMe() {
-		return instance.post('auth/me', {})
+		return instance.post(authServerEndpoints.me, {})
 	},
 	login(loginData: loginDataType) {
-		return instance.post('/auth/login', loginData)
+		return instance.post(authServerEndpoints.login, loginData)
 	},
 	logout() {
-		return instance.delete('auth/me')
+		return instance.delete(authServerEndpoints.me)
 	},
 	register(email: string, password: string) {
-		return instance.post('/auth/register', { email, password })
+		return instance.post(authServerEndpoints.register, { email, password })
 	},
 	//локальный бэк не поддерживает этот запрос - делать на хероку
 	sendPasswordRecoveryRequest(email: string) {
@@ -41,18 +42,24 @@ export const authAPI = {
 		)
 	},
 	sendNewPassword(password: string, resetPasswordToken: string) {
-		return instance.post('/auth/set-new-password', {
+		return instance.post(authServerEndpoints.setNewPassword, {
 			password,
 			resetPasswordToken,
 		})
 	},
+	updateUserName(name: string) {
+		return instance.put(authServerEndpoints.me, { name })
+	},
+	updateUserAvatarUrl(avatar: string) {
+		return instance.put(authServerEndpoints.me, { avatar })
+	},
 }
 
-export const CardsPacksAPI = {
-	getPacks(params:any){
-		return instance.get('/cards/pack',{params:params})
+export const cardsPacksAPI = {
+	getPacks(params: any) {
+		return instance.get(cardsServerEndpoints.pack, { params: params })
 	},
-	getCards(params:any){
-		return instance.get('/cards/card',{params:params})
-	}
+	getCards(params: any) {
+		return instance.get(cardsServerEndpoints.card, { params: params })
+	},
 }

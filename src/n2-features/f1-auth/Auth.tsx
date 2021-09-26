@@ -87,7 +87,7 @@ const Auth = () => {
 				<div className={s.loginButtonContainer}>
 					<button
 						className={s.loginButton}
-						disabled={isLoading ? true : false}
+						disabled={isLoading}
 						type='submit'
 					>
 						Login

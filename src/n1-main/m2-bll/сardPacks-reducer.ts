@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux'
-import { CardsPacksAPI } from '../m3-dal/api'
+import { cardsPacksAPI } from '../m3-dal/api'
 
 const InitialState = {
 	cardsPacks: [],
@@ -28,12 +28,12 @@ const setCards = (cards: any) => ({ type: 'SET-CARDS', cards } as const)
 
 //thunk
 export const getPacksTC = (params: any) => (dispatch: Dispatch) => {
-	CardsPacksAPI.getPacks(params).then(res => {
+	cardsPacksAPI.getPacks(params).then(res => {
 		dispatch(setPacks(res.data.cardPacks))
 	})
 }
 export const getCardsTC = (params: any) => (dispatch: Dispatch) => {
-	CardsPacksAPI.getCards(params).then(res => {
+	cardsPacksAPI.getCards(params).then(res => {
 		dispatch(setCards(res.data.cards))
 	})
 }
