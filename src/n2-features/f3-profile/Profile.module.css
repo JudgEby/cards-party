@@ -1,8 +1,47 @@
-.avatar {
+.profileContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.profileContainer input {
+	display: block;
+}
+
+.profileContainer .avatar {
 	display: inline-block;
 	width: 400px;
 	height: 300px;
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
+}
+
+.profileContainer .avatarChangeIconWrapper{
+	border-radius: 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: white;
+	height: 50px;
+	width: 50px;
+}
+
+.profileContainer .avatarChangeIconWrapper:hover {
+	cursor: pointer;
+}
+
+.profileContainer .avatarChangeIcon {
+	height: 30px;
+	width: 30px;
+	background-color: white;
+}
+
+.userNameWrapper {
+	display: flex;
+	align-items: center;
+}
+
+.userNameWrapper .name {
+	margin-right: 20px;
 }
