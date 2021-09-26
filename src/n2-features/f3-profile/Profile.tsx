@@ -1,4 +1,4 @@
-import React, { KeyboardEvent, useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
 	ProfileStateType,
@@ -10,8 +10,11 @@ import styles from './Profile.module.css'
 import { Redirect } from 'react-router-dom'
 import defaultAvatar from '../../Media/avatar/icon-avatar.jpg'
 import editIcon from '../../Media/edit-icon.svg'
+import SuperButton from '../../n1-main/m1-ui/common/SuperButton/SuperButton'
+import SuperInputText from '../../n1-main/m1-ui/common/SuperInputText/SuperInputText'
 
 const Profile = () => {
+	console.log('Profile')
 	const dispatch = useDispatch()
 	const { name, email, avatar, publicCardPacksCount, verified } = useSelector<
 		AppRootStateType,
@@ -24,9 +27,16 @@ const Profile = () => {
 	const [editAvatarMode, setEditAvatarMode] = useState(false)
 	const [newNameInputValue, setNewNameInputValue] = useState('')
 	const [editNameMode, setEditNameMode] = useState(false)
-
+	const [nameError, setNameError] = useState<string | undefined>(undefined)
 	if (!isAuthorized) {
 		return <Redirect to={'/login'} />
+	}
+
+	const nameValidation = (name: string): string => {
+		if (name.length <= 3) {
+			return 'Must be more then 3 characters'
+		}
+		return 'true'
 	}
 
 	const editAvatar = () => {
@@ -41,28 +51,80 @@ const Profile = () => {
 	const editName = () => {
 		if (!editNameMode) {
 			setEditNameMode(true)
+			setNameError(undefined)
 			if (name) {
 				setNewNameInputValue(name)
 			}
 		} else {
+			setNameError(undefined)
 			setEditNameMode(false)
 			setNewNameInputValue('')
 		}
 	}
 
-	const sendNewAvatar = (e: KeyboardEvent<HTMLInputElement>) => {
-		if (e && e.key === 'Enter') {
-			dispatch(updateUserAvatar(newAvatarInputValue))
-			setNewAvatarInputValue('')
+	const onChangeNameInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
+		setNameError(undefined)
+		setNewNameInputValue(e.target.value)
+	}
+
+	const onChangeAvatarInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
+		setNewAvatarInputValue(e.target.value)
+	}
+
+	const sendNewAvatar = () => {
+		dispatch(updateUserAvatar(newAvatarInputValue))
+		setNewAvatarInputValue('')
+		setEditAvatarMode(false)
+	}
+
+	const sendNewName = () => {
+		const validation = nameValidation(newNameInputValue)
+		if (validation === 'true') {
+			dispatch(updateUserName(newNameInputValue))
+			setNewNameInputValue('')
+			setEditNameMode(false)
+			setNameError(undefined)
+		} else {
+			setNameError(validation)
 		}
 	}
 
-	const sendNewName = (e: KeyboardEvent<HTMLInputElement>) => {
-		if (e && e.key === 'Enter') {
-			dispatch(updateUserName(newNameInputValue))
-			setNewNameInputValue('')
-		}
-	}
+	const editAvatarBlock = editAvatarMode && (
+		<>
+			<SuperInputText
+				value={newAvatarInputValue}
+				onChange={onChangeAvatarInputHandler}
+				onEnter={sendNewAvatar}
+			/>
+			<div className={styles.buttons}>
+				<SuperButton type='button' onClick={sendNewAvatar}>
+					Change Avatar
+				</SuperButton>
+				<SuperButton canceling type='button' onClick={editAvatar}>
+					Cancel
+				</SuperButton>
+			</div>
+		</>
+	)
+
+	const editNameBlock = editNameMode && (
+		<>
+			<SuperInputText
+				value={newNameInputValue}
+				onChange={onChangeNameInputHandler}
+				onEnter={sendNewName}
+				error={nameError}
+			/>
+			<div className={styles.buttons}>
+				<SuperButton type='button' onClick={sendNewName}>
+					Change Name
+				</SuperButton>
+				<SuperButton canceling type='button' onClick={editName}>
+					Cancel
+				</SuperButton>
+			</div>
+		</>
+	)
 
 	return (
 		<div className={styles.profileContainer}>
@@ -86,18 +148,7 @@ const Profile = () => {
 					/>
 				</div>
 			</div>
-			<input
-				style={editAvatarMode ? {} : { display: 'none' }}
-				type='text'
-				placeholder={'enter new avatar URL'}
-				value={newAvatarInputValue}
-				onChange={e => setNewAvatarInputValue(e.target.value)}
-				onBlur={() => {
-					setNewAvatarInputValue('')
-					editAvatar()
-				}}
-				onKeyDown={sendNewAvatar}
-			/>
+			{editAvatarBlock}
 			<div className={styles.userNameWrapper}>
 				<span className={styles.name}>{name}</span>
 				<span
@@ -108,19 +159,7 @@ const Profile = () => {
 					onClick={editName}
 				/>
 			</div>
-			<input
-				style={editNameMode ? {} : { display: 'none' }}
-				type='text'
-				placeholder={'enter new name'}
-				value={newNameInputValue}
-				onChange={e => setNewNameInputValue(e.target.value)}
-				onBlur={() => {
-					setNewNameInputValue('')
-					editName()
-				}}
-				onKeyDown={sendNewName}
-			/>
-
+			{editNameBlock}
 			<div>{`email: ${email}`}</div>
 			<div>{`Количество колод: ${publicCardPacksCount}`}</div>
 			<div>{`Почта подтверждена: ${verified ? 'Да' : 'Нет'}`}</div>

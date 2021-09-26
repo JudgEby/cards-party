@@ -2,6 +2,12 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	padding: 25px;
+	box-sizing: border-box;
+	max-width: 40%;
+	border-radius: 10px;
+	background-color: #F9F9FE;
+	margin: 10px auto 0;
 }
 
 .profileContainer input {
@@ -12,6 +18,7 @@
 	display: inline-block;
 	width: 400px;
 	height: 300px;
+	border-radius: 10px;
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
@@ -22,12 +29,12 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: white;
+	background: linear-gradient(50deg, #6cd0e7, #5ec7e7) no-repeat;
 	height: 50px;
 	width: 50px;
 }
 
-.profileContainer .avatarChangeIconWrapper:hover {
+.profileContainer .avatarChangeIconWrapper:hover, .avatarChangeIcon {
 	cursor: pointer;
 }
 
@@ -44,4 +51,9 @@
 
 .userNameWrapper .name {
 	margin-right: 20px;
+}
+
+.buttons {
+	display: flex;
+	gap: 20px;
 }
