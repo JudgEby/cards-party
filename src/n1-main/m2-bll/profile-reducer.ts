@@ -1,4 +1,5 @@
 import { AppThunk } from './store'
+import { authAPI } from '../m3-dal/api'
 
 const initialState = {
 	_id: null as null | string,
@@ -21,6 +22,12 @@ export const profileReducer = (
 			return state
 	}
 }
+//utils
+const getDataForProfileFromResponseObj = (res: any): ProfileStateType => {
+	const { _id, name, email, avatar, publicCardPacksCount, verified } = res
+	return { _id, name, email, avatar, publicCardPacksCount, verified }
+}
+
 // actions
 export const setProfile = (data: ProfileStateType) =>
 	({ type: 'PROFILE/SET-PROFILE-DATA', payload: { ...data } } as const)
@@ -29,6 +36,26 @@ export const setProfileData =
 	(data: ProfileStateType): AppThunk =>
 	dispatch => {
 		dispatch(setProfile(data))
+	}
+export const updateUserName =
+	(name: string): AppThunk =>
+	async dispatch => {
+		try {
+			const res = await authAPI.updateUserName(name)
+			dispatch(
+				setProfile(getDataForProfileFromResponseObj(res.data.updatedUser))
+			)
+		} catch (e: any) {}
+	}
+export const updateUserAvatar =
+	(url: string): AppThunk =>
+	async dispatch => {
+		try {
+			const res = await authAPI.updateUserAvatarUrl(url)
+			dispatch(
+				setProfile(getDataForProfileFromResponseObj(res.data.updatedUser))
+			)
+		} catch (e: any) {}
 	}
 export const clearProfileData = (): AppThunk => dispatch => {
 	dispatch(
