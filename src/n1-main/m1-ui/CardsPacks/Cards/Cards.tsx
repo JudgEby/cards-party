@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import s from './Cards.module.css'
-import { NavLink, Redirect, useParams } from 'react-router-dom'
+import { Redirect, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { getCardsTC } from '../../../m2-bll/cardsPacks-reducer'
+import { getCardsTC } from '../../../m2-bll/сardPacks-reducer'
 import { AppRootStateType } from '../../../m2-bll/store'
 
 export const Cards = () => {
@@ -11,11 +11,15 @@ export const Cards = () => {
 	const dispatch = useDispatch()
 
 	useEffect(() => {
-		dispatch(getCardsTC({ cardsPack_id: CardsPackID,pageCount:100 }))
+		dispatch(getCardsTC({ cardsPack_id: CardsPackID, pageCount: 100 }))
 	}, [])
 
-	const cards = useSelector<AppRootStateType, any>(state => state.CardsPacks.cards)
-	const isAuthorized = useSelector<AppRootStateType, boolean>(state => state.auth.isAuthorized)
+	const cards = useSelector<AppRootStateType, any>(
+		state => state.cardsPacks.cards
+	)
+	const isAuthorized = useSelector<AppRootStateType, boolean>(
+		state => state.auth.isAuthorized
+	)
 
 	if (!isAuthorized) {
 		return <Redirect to={'/login'} />
@@ -37,10 +41,18 @@ export const Cards = () => {
 					{cards.map((card: any) => {
 						return (
 							<div className={s.Card}>
-								<div style={{ width: '16%', fontSize: 30 }}>{card.question}</div>
-								<div style={{ width: '16%', fontSize: 30 }}>{card.answer}</div>
-								<div style={{ width: '16%', fontSize: 30 }}>{card.grade}</div>
-								<div style={{ width: '16%', fontSize: 30 }}>{card.updated}</div>
+								<div style={{ width: '16%', fontSize: 30 }}>
+									{card.question}
+								</div>
+								<div style={{ width: '16%', fontSize: 30 }}>
+									{card.answer}
+								</div>
+								<div style={{ width: '16%', fontSize: 30 }}>
+									{card.grade}
+								</div>
+								<div style={{ width: '16%', fontSize: 30 }}>
+									{card.updated}
+								</div>
 								<div style={{ width: '16%', fontSize: 30 }}></div>
 								<div>
 									<button>Delete</button>

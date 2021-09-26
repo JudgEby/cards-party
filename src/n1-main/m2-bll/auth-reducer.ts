@@ -5,12 +5,12 @@ import { clearProfileData, setProfileData } from './profile-reducer'
 const initialState = {
 	isAuthorized: false,
 	error: '',
-	isLoading:false
+	isLoading: false,
 }
 type InitialStateType = {
 	isAuthorized: boolean
 	error: string
-	isLoading:boolean
+	isLoading: boolean
 }
 
 export const authReducer = (
@@ -26,16 +26,17 @@ export const authReducer = (
 		case 'AUTH/ERROR':
 			return { ...state, error: action.err }
 		case 'AUTH/IS-LOADING':
-			return {...state,isLoading:action.isLoading}
+			return { ...state, isLoading: action.isLoading }
 		default:
 			return state
 	}
 }
 // actions
-const Login = (isAuthorized: boolean) =>
+export const setIsAuthorized = (isAuthorized: boolean) =>
 	({ type: 'AUTH/LOGIN', isAuthorized } as const)
 const setError = (err: string) => ({ type: 'AUTH/ERROR', err } as const)
-export const setIsLoading = (isLoading:boolean) => ({type:'AUTH/IS-LOADING',isLoading}as const )
+export const setIsLoading = (isLoading: boolean) =>
+	({ type: 'AUTH/IS-LOADING', isLoading } as const)
 
 // thunks
 export const LoginTC =
@@ -54,7 +55,7 @@ export const LoginTC =
 					verified: res.data.verified,
 				}
 				dispatch(setProfileData(data))
-				dispatch(Login(true))
+				dispatch(setIsAuthorized(true))
 				dispatch(setIsLoading(false))
 			})
 			.catch(e => {
@@ -80,14 +81,14 @@ export const getMe = (): AppThunk => async dispatch => {
 				verified,
 			})
 		)
-		dispatch(Login(true))
+		dispatch(setIsAuthorized(true))
 	} catch (e: any) {}
 }
 export const logout = (): AppThunk => async dispatch => {
 	try {
 		dispatch(setIsLoading(true))
 		await authAPI.logout()
-		dispatch(Login(false))
+		dispatch(setIsAuthorized(false))
 		dispatch(clearProfileData())
 		dispatch(setIsLoading(false))
 	} catch (e: any) {
@@ -95,7 +96,7 @@ export const logout = (): AppThunk => async dispatch => {
 	}
 }
 // types
-export type LoginAT = ReturnType<typeof Login>
+export type LoginAT = ReturnType<typeof setIsAuthorized>
 export type setErrorAT = ReturnType<typeof setError>
 export type setIsLoadingAT = ReturnType<typeof setIsLoading>
 export type dataType = {

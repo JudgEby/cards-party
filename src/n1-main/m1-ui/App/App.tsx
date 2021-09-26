@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import styles from './App.module.css'
 import Test from '../../../n2-features/f0-test/Test'
@@ -11,11 +11,44 @@ import PasswordRecovery from '../../../n2-features/f4-passwordRecovery/PasswordR
 import NewPassword from '../../../n2-features/f5-newPassword/NewPassword'
 import { CardsPacks } from '../CardsPacks/CardsPacks'
 import { Cards } from '../CardsPacks/Cards/Cards'
+import { initializeAppTC, RequestStatusType } from '../../m2-bll/app-reducer'
+import { AppRootStateType } from '../../m2-bll/store'
+import { useDispatch, useSelector } from 'react-redux'
+import Loader from '../common/Loader/Loader'
 
 const App = () => {
+	const status = useSelector<AppRootStateType, RequestStatusType>(
+		state => state.app.status
+	)
+	const isInitialized = useSelector<AppRootStateType, boolean>(
+		state => state.app.isInitialized
+	)
+	const dispatch = useDispatch()
+	useEffect(() => {
+		dispatch(initializeAppTC())
+	}, [])
+
+	const loader = (
+		<div
+			style={{
+				position: 'fixed',
+				top: '30%',
+				textAlign: 'center',
+				width: '100%',
+			}}
+		>
+			<Loader />
+		</div>
+	)
+
+	if (!isInitialized) {
+		return loader
+	}
+
 	return (
 		<div>
 			<Header />
+			{status === 'loading' && loader}
 			<div className={styles.container}>
 				<Switch>
 					<Route exact path={'/'} render={() => <div>Home</div>} />
@@ -38,7 +71,7 @@ const App = () => {
 						render={() => <NewPassword />}
 					/>
 					<Route exact path={'/test'} render={() => <Test />} />
-					<Route path={'/packs'} render={() => <CardsPacks/>} />
+					<Route path={'/packs'} render={() => <CardsPacks />} />
 					<Route path={`/cards/:CardsPackID?`} render={() => <Cards />} />
 					<Redirect from={'*'} to={'/404'} />
 				</Switch>
