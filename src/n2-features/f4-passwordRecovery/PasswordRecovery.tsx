@@ -4,6 +4,8 @@ import { sendPasswordRecovery } from '../../n1-main/m2-bll/passwordRecovery-redu
 import { AppRootStateType } from '../../n1-main/m2-bll/store'
 import s from './PasswordRecovery.module.css'
 import { NavLink } from 'react-router-dom'
+import SuperInputText from '../../n1-main/m1-ui/common/SuperInputText/SuperInputText'
+import SuperButton from '../../n1-main/m1-ui/common/SuperButton/SuperButton'
 
 const PasswordRecovery = () => {
 	const recoveryError = useSelector<AppRootStateType, null | string>(
@@ -18,10 +20,8 @@ const PasswordRecovery = () => {
 	const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
 		setInputValue(e.target.value)
 	}
-	const onPressEnterInputHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-		if (e && e.key === 'Enter') {
-			dispatch(sendPasswordRecovery(inputValue))
-		}
+	const onPressEnterInputHandler = () => {
+		dispatch(sendPasswordRecovery(inputValue))
 	}
 	const onClickButtonHandler = () => {
 		dispatch(sendPasswordRecovery(inputValue))
@@ -40,11 +40,11 @@ const PasswordRecovery = () => {
 		<div className={s.passwordRecoveryContainer}>
 			<h4>Forgot your password?</h4>
 			<div className={s.inputField}>
-				<input
-					type='text'
+				<SuperInputText
 					value={inputValue}
 					onChange={onChangeInputHandler}
-					onKeyDown={onPressEnterInputHandler}
+					onEnter={onPressEnterInputHandler}
+					error={recoveryError || undefined}
 				/>
 				<p>
 					Enter your email address and we will send you further
@@ -53,16 +53,10 @@ const PasswordRecovery = () => {
 			</div>
 
 			<div className={s.positionBtn}>
-				<button className={s.sendButton} onClick={onClickButtonHandler}>
-					Send
-				</button>
-				{recoveryError && (
-					<div style={{ color: 'red' }}>{recoveryError}</div>
-				)}
-
+				<SuperButton onClick={onClickButtonHandler}>Send</SuperButton>
 				<p>If you remember your password</p>
 				<NavLink to='/login' className={s.footerBtn}>
-					Try again
+					Sign In
 				</NavLink>
 			</div>
 		</div>

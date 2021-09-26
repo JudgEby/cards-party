@@ -116,10 +116,8 @@ const Profile = () => {
 				error={nameError}
 			/>
 			<div className={styles.buttons}>
-				<SuperButton type='button' onClick={sendNewName}>
-					Change Name
-				</SuperButton>
-				<SuperButton canceling type='button' onClick={editName}>
+				<SuperButton onClick={sendNewName}>Change Name</SuperButton>
+				<SuperButton canceling onClick={editName}>
 					Cancel
 				</SuperButton>
 			</div>

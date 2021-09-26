@@ -13,9 +13,15 @@ const Registration = () => {
 	const [password, setPassword] = useState<string>('')
 	const [checkPassword, setCheckPassword] = useState<string>('')
 
-	const isRegistered = useSelector<AppRootStateType, boolean>(state => state.registration.isRegistered)
-	const error = useSelector<AppRootStateType, null | string>(state => state.registration.error)
-	const isLoading = useSelector<AppRootStateType, boolean>(state => state.auth.isLoading)
+	const isRegistered = useSelector<AppRootStateType, boolean>(
+		state => state.registration.isRegistered
+	)
+	const error = useSelector<AppRootStateType, null | string>(
+		state => state.registration.error
+	)
+	const isLoading = useSelector<AppRootStateType, boolean>(
+		state => state.auth.isLoading
+	)
 	const dispatch = useDispatch()
 
 	const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
@@ -50,17 +56,39 @@ const Registration = () => {
 			<div className={s.registrationContainer}>
 				<h4>Sign Up</h4>
 				<div className={s.inputFields}>
-					<SuperInputText placeholder='email' value={login}
-										 onChangeText={setLogin} />
-					<input type='password' placeholder='password' value={password}
-							 onChange={onChangePassword} />
-					<input type='password' placeholder='confirm password'
-							 value={checkPassword}
-							 onChange={onChangeCheckPassword} />
+					<SuperInputText
+						placeholder='email'
+						value={login}
+						onChangeText={setLogin}
+					/>
+					<input
+						type='password'
+						placeholder='password'
+						value={password}
+						onChange={onChangePassword}
+					/>
+					<input
+						type='password'
+						placeholder='confirm password'
+						value={checkPassword}
+						onChange={onChangeCheckPassword}
+					/>
 				</div>
 				<div className={s.button}>
-					<SuperButton className={s.btnCancelRegister} type='button' onClick={abortRegistration}>Cancel</SuperButton>
-					<SuperButton disabled={isLoading} className={s.btnCancelRegister} type='submit'>Register</SuperButton>
+					<SuperButton
+						className={s.btnCancelRegister}
+						type='button'
+						onClick={abortRegistration}
+					>
+						Cancel
+					</SuperButton>
+					<SuperButton
+						disabled={isLoading}
+						className={s.btnCancelRegister}
+						type='submit'
+					>
+						Register
+					</SuperButton>
 				</div>
 				{error && <div className={s.err}>{error}</div>}
 				{isLoading && <Loader />}
