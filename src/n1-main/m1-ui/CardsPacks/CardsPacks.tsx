@@ -3,7 +3,7 @@ import s from './CardsPacks.module.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { getPacksTC } from '../../m2-bll/cardsPacks-reducer'
 import { AppRootStateType } from '../../m2-bll/store'
-import { NavLink } from 'react-router-dom'
+import { NavLink, Redirect } from 'react-router-dom'
 
 export const CardsPacks = () => {
 	const dispatch = useDispatch()
@@ -13,8 +13,12 @@ export const CardsPacks = () => {
 	},[])
 
 	const CardsPacks = useSelector<AppRootStateType,any>(state => state.CardsPacks.cardsPacks)
-	debugger
+	const userID = useSelector<AppRootStateType,string|null>(state => state.profile._id)
+	const isAuthorized = useSelector<AppRootStateType,boolean>(state => state.auth.isAuthorized)
 
+   if(!isAuthorized){
+		return(<Redirect to={'/login'}/>)
+	}
 	return (
 		<div className={s.CardsPacksContainer}>
 			<div className={s.CardsPacks}>
@@ -35,11 +39,17 @@ export const CardsPacks = () => {
 							<div style={{width:'20%',fontSize:30}}>{Pack.cardsCount}</div>
 							<div style={{width:'20%',fontSize:30}}>{Pack.updated}</div>
 							<div style={{width:'20%',fontSize:30}}></div>
-							<div style={{width:'20%',fontSize:30}}>
-								<button>Delete</button>
-								<button>Update</button>
-								<NavLink to={'/cards'}>Cards</NavLink>
-							</div>
+							{userID && userID === Pack.user_id
+								?<div style={{width:'20%',fontSize:30}}>
+									<button>Delete</button>
+									<button>Update</button>
+									<NavLink to={`/cards/${Pack._id}`}>Cards</NavLink>
+								</div>
+								:<div style={{width:'20%',fontSize:30}}>
+									<NavLink to={`/cards/${Pack._id}`}>Cards</NavLink>
+								</div>}
+
+
 						</div>
 					)
 				})}

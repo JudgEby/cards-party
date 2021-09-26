@@ -29,6 +29,7 @@ const Header = () => {
 			<NavLink to={'/password/recovery'} className={styles.link} activeClassName={styles.active}>Password Recovery</NavLink>
 			<NavLink to={'/password/new'} className={styles.link} activeClassName={styles.active}>New Password</NavLink>
 			<NavLink to={'/test'} className={styles.link} activeClassName={styles.active}>Test</NavLink>
+			<NavLink to={'/packs'} className={styles.link} activeClassName={styles.active}>Packs</NavLink>
 			<div><img src={menu} className={styles.block} alt={menu}/></div>
 		</header>
 	)

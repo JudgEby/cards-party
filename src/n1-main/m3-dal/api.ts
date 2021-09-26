@@ -51,5 +51,8 @@ export const authAPI = {
 export const CardsPacksAPI = {
 	getPacks(params:any){
 		return instance.get('/cards/pack',{params:params})
+	},
+	getCards(params:any){
+		return instance.get('/cards/card',{params:params})
 	}
 }
