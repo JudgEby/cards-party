@@ -14,20 +14,24 @@ import SuperButton from '../common/SuperButton/SuperButton'
 export const CardsPacks = () => {
 	const dispatch = useDispatch()
 	const [addNewPackNameInputValue, setAddNewPackNameInputValue] = useState('')
+	const [showOnlyMyPack, setShowOnlyMyPack] = useState(false)
+	const [updateMyPackNameMode, setUpdateMyPackNameMode] = useState(true)
+	const [updateMyPackNameInputValue, setUpdateMyPackNameInputValue] =
+		useState('')
+
+	const getPacksWithParams = (params: {
+		user_id?: string | null
+		pageCount?: number
+		min?: number
+		max?: number
+		page?: number
+	}) => {
+		dispatch(getPacksTC({ ...params }))
+	}
 
 	useEffect(() => {
-		dispatch(getPacksTC({ pageCount: 100 }))
+		getPacksWithParams({ pageCount: 100 })
 	}, [])
-
-	const addNewPackHandler = () => {
-		dispatch(
-			addNewPack(addNewPackNameInputValue, false, '', { pageCount: 100 })
-		)
-	}
-
-	const deletePackHandler = (packId: string) => {
-		dispatch(deletePack(packId, { pageCount: 100 }))
-	}
 
 	const CardsPacks = useSelector<AppRootStateType, any>(
 		state => state.cardsPacks.cardsPacks
@@ -43,6 +47,26 @@ export const CardsPacks = () => {
 		setAddNewPackNameInputValue('')
 	}, [CardsPacks])
 
+	const addNewPackHandler = () => {
+		dispatch(
+			addNewPack(addNewPackNameInputValue, false, '', { pageCount: 100 })
+		)
+	}
+
+	const deletePackHandler = (packId: string) => {
+		dispatch(deletePack(packId, { pageCount: 100 }))
+	}
+
+	const getMyPacksHandler = () => {
+		getPacksWithParams({ pageCount: 100, user_id: userID })
+		setShowOnlyMyPack(true)
+	}
+
+	const getAllPacksHandler = () => {
+		getPacksWithParams({ pageCount: 100 })
+		setShowOnlyMyPack(false)
+	}
+
 	if (!isAuthorized) {
 		return <Redirect to={'/login'} />
 	}
@@ -50,6 +74,15 @@ export const CardsPacks = () => {
 		<div className={s.CardsPacksContainer}>
 			<div className={s.CardsPacks}>
 				<div className={s.addingNewPackBlock}>
+					{!showOnlyMyPack ? (
+						<SuperButton onClick={getMyPacksHandler}>
+							Show My Packs
+						</SuperButton>
+					) : (
+						<SuperButton onClick={getAllPacksHandler}>
+							Show All Packs
+						</SuperButton>
+					)}
 					<SuperInputText
 						placeholder={'enter new pack name'}
 						onChangeText={setAddNewPackNameInputValue}
@@ -60,43 +93,51 @@ export const CardsPacks = () => {
 					</SuperButton>
 				</div>
 				<div className={s.PacksParams}>
-					<div style={{ width: '20%', fontSize: 30 }}>Name</div>
-					<div style={{ width: '20%', fontSize: 30 }}>CardsCount</div>
-					<div style={{ width: '20%', fontSize: 30 }}>Updated</div>
-					<div style={{ width: '20%', fontSize: 30 }}>Url</div>
-					<div style={{ width: '20%', fontSize: 30 }}></div>
+					<div className={s.nameColumn}>Name</div>
+					<div className={s.cardsCountColumn}>CardsCount</div>
+					<div className={s.updatedColumn}>Updated</div>
+					<div className={s.urlColumn}>Url</div>
+					<div className={s.cardsColumn}>Cards</div>
 				</div>
 				<div className={s.PacksContainer}>
 					{CardsPacks.map((Pack: any) => {
 						return (
 							<div className={s.Pack}>
-								<div style={{ width: '20%', fontSize: 30 }}>
-									{Pack.name}
-								</div>
-								<div style={{ width: '20%', fontSize: 30 }}>
+								<div className={s.nameColumn}>{Pack.name}</div>
+								<div className={s.cardsCountColumn}>
 									{Pack.cardsCount}
 								</div>
-								<div style={{ width: '20%', fontSize: 30 }}>
+								<div className={s.updatedColumn}>
 									{new Date(Pack.updated).toLocaleString('ru-RU')}
 								</div>
-								<div style={{ width: '20%', fontSize: 30 }}></div>
-								{userID && userID === Pack.user_id ? (
-									<div style={{ width: '20%', fontSize: 30 }}>
-										<SuperButton
-											onClick={() => {
-												deletePackHandler(Pack._id)
-											}}
-										>
-											Delete
-										</SuperButton>
-										<SuperButton>Update</SuperButton>
-										<NavLink to={`/cards/${Pack._id}`}>Cards</NavLink>
-									</div>
-								) : (
-									<div style={{ width: '20%', fontSize: 30 }}>
-										<NavLink to={`/cards/${Pack._id}`}>Cards</NavLink>
-									</div>
-								)}
+								<div className={s.urlColumn}>some url</div>
+								<div className={s.actionsWithPackBlock}>
+									{userID && userID === Pack.user_id && (
+										<>
+											{updateMyPackNameMode ? (
+												<>
+													<SuperInputText />
+													<SuperButton>Send New Name</SuperButton>
+													<SuperButton canceling>
+														Cancel
+													</SuperButton>
+												</>
+											) : (
+												<>
+													<SuperButton
+														onClick={() => {
+															deletePackHandler(Pack._id)
+														}}
+													>
+														Delete
+													</SuperButton>
+													<SuperButton>Update Name</SuperButton>
+												</>
+											)}
+										</>
+									)}
+									<NavLink to={`/cards/${Pack._id}`}>Cards</NavLink>
+								</div>
 							</div>
 						)
 					})}

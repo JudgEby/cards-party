@@ -25,3 +25,40 @@
     margin: 0;
 
 }
+
+.actionsWithPackBlock {
+    min-width: 40%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    padding-right: 50px;
+}
+
+.actionsWithPackBlock input {
+    margin: 0;
+    height: 25px;
+}
+.actionsWithPackBlock a {
+    font-size: 30px;
+}
+
+.nameColumn, .cardsCountColumn, .updatedColumn, .urlColumn, .cardsColumn {
+    font-size: 30px;
+}
+
+.nameColumn {
+    min-width: 20%
+}
+.cardsCountColumn {
+    min-width: 10%
+}
+.updatedColumn {
+    min-width: 20%
+}
+.urlColumn {
+    min-width: 10%
+}
+.cardsColumn {
+    min-width: 40%
+}
