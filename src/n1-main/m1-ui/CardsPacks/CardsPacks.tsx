@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import s from './CardsPacks.module.css'
 import { useDispatch, useSelector } from 'react-redux'
-import { addNewPack, getPacksTC } from '../../m2-bll/сardPacks-reducer'
+import {
+	addNewPack,
+	deletePack,
+	getPacksTC,
+} from '../../m2-bll/сardPacks-reducer'
 import { AppRootStateType } from '../../m2-bll/store'
 import { NavLink, Redirect } from 'react-router-dom'
 import SuperInputText from '../common/SuperInputText/SuperInputText'
@@ -19,6 +23,10 @@ export const CardsPacks = () => {
 		dispatch(
 			addNewPack(addNewPackNameInputValue, false, '', { pageCount: 100 })
 		)
+	}
+
+	const deletePackHandler = (packId: string) => {
+		dispatch(deletePack(packId, { pageCount: 100 }))
 	}
 
 	const CardsPacks = useSelector<AppRootStateType, any>(
@@ -74,8 +82,14 @@ export const CardsPacks = () => {
 								<div style={{ width: '20%', fontSize: 30 }}></div>
 								{userID && userID === Pack.user_id ? (
 									<div style={{ width: '20%', fontSize: 30 }}>
-										<button>Delete</button>
-										<button>Update</button>
+										<SuperButton
+											onClick={() => {
+												deletePackHandler(Pack._id)
+											}}
+										>
+											Delete
+										</SuperButton>
+										<SuperButton>Update</SuperButton>
 										<NavLink to={`/cards/${Pack._id}`}>Cards</NavLink>
 									</div>
 								) : (

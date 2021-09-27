@@ -51,6 +51,14 @@ export const addNewPack =
 			dispatch(getPacksTC(paramsForGettingPack))
 		} catch (e) {}
 	}
+export const deletePack =
+	(packId: string, paramsForGettingPack: { pageCount: number }): AppThunk =>
+	async dispatch => {
+		try {
+			await cardsPacksAPI.deletePack(packId)
+			dispatch(getPacksTC(paramsForGettingPack))
+		} catch (e) {}
+	}
 
 //types
 export type setPacksAT = ReturnType<typeof setPacks>

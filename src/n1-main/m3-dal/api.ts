@@ -71,4 +71,7 @@ export const cardsPacksAPI = {
 			},
 		})
 	},
+	deletePack(packId: string) {
+		return instance.delete(`${cardsServerEndpoints.pack}?id=${packId}`)
+	},
 }
