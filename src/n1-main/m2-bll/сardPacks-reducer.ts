@@ -60,6 +60,14 @@ export const deletePack =
 		} catch (e) {}
 	}
 
+	export const addCard = (cardsPack_id:string,paramsForGettingCards:{pageCount: number,cardsPack_id:string}) => (dispatch:any) => {
+	cardsPacksAPI
+		.addCard(cardsPack_id)
+		.then((res) => {
+			dispatch(getCardsTC(paramsForGettingCards))
+		})
+	}
+
 //types
 export type setPacksAT = ReturnType<typeof setPacks>
 export type setCardsAT = ReturnType<typeof setCards>
