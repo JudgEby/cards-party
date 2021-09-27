@@ -12,3 +12,16 @@
     width: 100%;
     display: flex;
 }
+
+.addingNewPackBlock {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.addingNewPackBlock input {
+    margin: 0;
+
+}

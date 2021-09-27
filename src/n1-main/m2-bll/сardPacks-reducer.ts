@@ -1,5 +1,6 @@
 import { Dispatch } from 'redux'
 import { cardsPacksAPI } from '../m3-dal/api'
+import { AppThunk } from './store'
 
 const InitialState = {
 	cardsPacks: [],
@@ -37,6 +38,19 @@ export const getCardsTC = (params: any) => (dispatch: Dispatch) => {
 		dispatch(setCards(res.data.cards))
 	})
 }
+export const addNewPack =
+	(
+		name: string,
+		privatePack: boolean = false,
+		deckCover: string = '',
+		paramsForGettingPack: { pageCount: number }
+	): AppThunk =>
+	async dispatch => {
+		try {
+			await cardsPacksAPI.addPack(name, privatePack, deckCover)
+			dispatch(getPacksTC(paramsForGettingPack))
+		} catch (e) {}
+	}
 
 //types
 export type setPacksAT = ReturnType<typeof setPacks>

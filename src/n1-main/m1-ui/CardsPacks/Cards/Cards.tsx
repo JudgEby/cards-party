@@ -51,7 +51,7 @@ export const Cards = () => {
 									{card.grade}
 								</div>
 								<div style={{ width: '16%', fontSize: 30 }}>
-									{card.updated}
+									{new Date(card.updated).toLocaleString('ru-RU')}
 								</div>
 								<div style={{ width: '16%', fontSize: 30 }}></div>
 								<div>

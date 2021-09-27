@@ -62,4 +62,13 @@ export const cardsPacksAPI = {
 	getCards(params: any) {
 		return instance.get(cardsServerEndpoints.card, { params: params })
 	},
+	addPack(name: string, privatePack: boolean = false, deckCover: string = '') {
+		return instance.post(cardsServerEndpoints.pack, {
+			cardsPack: {
+				name,
+				private: privatePack,
+				deckCover,
+			},
+		})
+	},
 }
