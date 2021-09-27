@@ -3,6 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, Redirect, useParams } from 'react-router-dom'
 import { AppRootStateType } from '../../n1-main/m2-bll/store'
 import { sendNewPassword } from '../../n1-main/m2-bll/newPassword-reducer'
+import SuperInputText from '../../n1-main/m1-ui/common/SuperInputText/SuperInputText'
+import styles from './NewPassword.module.css'
+import SuperButton from '../../n1-main/m1-ui/common/SuperButton/SuperButton'
 
 const NewPassword = () => {
 	const dispatch = useDispatch()
@@ -50,53 +53,61 @@ const NewPassword = () => {
 	}
 
 	return (
-		<div>
-			<div>NewPassword</div>
+		<div className={styles.newPasswordContainer}>
+			<h2>New Password</h2>
 			{/*если нет токена, то направляем юзера на страницу рекавери*/}
 			{!token && (
-				<div>
-					You mast to request recovery link to your email{' '}
-					<NavLink to={'/password/recovery'}>Recover Password</NavLink>
+				<div className={styles.tokenNotFoundBlock}>
+					<span>You mast to request recovery link to your email</span>
+					<NavLink to={'/password/recovery'}>
+						<SuperButton>Recover Password</SuperButton>
+					</NavLink>
 				</div>
 			)}
-			<div>
-				<span>Enter new password</span>
-				<input
-					name={'newPassword'}
-					type='text'
-					value={newPasswordValue}
-					onChange={e => {
-						onChangeInputHandler(e)
-						checkIsPasswordsValid(e.target.value)
-					}}
-				/>
-				{isPasswordValid !== null && !isPasswordValid && (
-					<div style={{ color: 'red' }}>
-						Password must be more then 7 character
+			{token && (
+				<>
+					<div className={styles.enterNewPasswordBlock}>
+						<span>Enter new password</span>
+						<SuperInputText
+							name={'newPassword'}
+							placeholder={'Enter new password'}
+							value={newPasswordValue}
+							onChange={e => {
+								onChangeInputHandler(e)
+								checkIsPasswordsValid(e.target.value)
+							}}
+							error={
+								isPasswordValid !== null && !isPasswordValid
+									? 'Password must be more then 7 character'
+									: undefined
+							}
+						/>
 					</div>
-				)}
-			</div>
-			<div>
-				<span>Confirm new password</span>
-				<input
-					name={'confirmPassword'}
-					type='text'
-					value={confirmPasswordValue}
-					onChange={e => {
-						onChangeInputHandler(e)
-						checkIsPasswordsMatch(newPasswordValue, e.target.value)
-					}}
-				/>
-				{!isPasswordsMatch && (
-					<div style={{ color: 'red' }}>Passwords must match</div>
-				)}
-			</div>
+					<div className={styles.confirmNewPasswordBlock}>
+						<span>Confirm new password</span>
+						<SuperInputText
+							name={'confirmPassword'}
+							placeholder={'confirm password'}
+							value={confirmPasswordValue}
+							onChange={e => {
+								onChangeInputHandler(e)
+								checkIsPasswordsMatch(newPasswordValue, e.target.value)
+							}}
+							error={
+								!isPasswordsMatch ? 'Passwords must match' : undefined
+							}
+						/>
+					</div>
 
-			<div>
-				<button onClick={sendNewPasswordHandler}>Send New password</button>
-			</div>
-			{newPasswordSendingError && (
-				<div style={{ color: 'red' }}>{newPasswordSendingError}</div>
+					<div>
+						<SuperButton onClick={sendNewPasswordHandler}>
+							Send New password
+						</SuperButton>
+					</div>
+					{newPasswordSendingError && (
+						<div className={styles.error}>{newPasswordSendingError}</div>
+					)}
+				</>
 			)}
 		</div>
 	)

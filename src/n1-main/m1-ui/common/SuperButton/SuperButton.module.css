@@ -9,6 +9,11 @@
     transition: .2s;
     cursor: pointer;
 }
+.common[disabled] {
+    opacity: .8;
+    cursor: none;
+}
+
 .default {
     color: #21268F;
     opacity: 0.8;
@@ -22,10 +27,7 @@
 .default:active {
     background-color: #81839e;
 }
-.default[disabled] {
-    opacity: .8;
-    cursor: none;
-}
+
 
 .canceling {
     color: #21268F;
@@ -39,8 +41,4 @@
 }
 .canceling:active {
     background-color: #ff4141;
-}
-.canceling[disabled] {
-    opacity: .8;
-    cursor: none;
 }

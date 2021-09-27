@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, KeyboardEvent } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { sendPasswordRecovery } from '../../n1-main/m2-bll/passwordRecovery-reducer'
 import { AppRootStateType } from '../../n1-main/m2-bll/store'
@@ -50,10 +50,10 @@ const PasswordRecovery = () => {
 					Enter your email address and we will send you further
 					instructions
 				</p>
+				<SuperButton onClick={onClickButtonHandler}>Send</SuperButton>
 			</div>
 
 			<div className={s.positionBtn}>
-				<SuperButton onClick={onClickButtonHandler}>Send</SuperButton>
 				<p>If you remember your password</p>
 				<NavLink to='/login' className={s.footerBtn}>
 					Sign In
