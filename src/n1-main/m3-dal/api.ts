@@ -74,11 +74,16 @@ export const cardsPacksAPI = {
 	deletePack(packId: string) {
 		return instance.delete(`${cardsServerEndpoints.pack}?id=${packId}`)
 	},
-	addCard (cardsPack_id:string) {
-		return instance.post(cardsServerEndpoints.card,{
-			card:{
-				cardsPack_id
-			}
+	updatePackName(packId: string, packName: string) {
+		return instance.put(cardsServerEndpoints.pack, {
+			cardsPack: { _id: packId, name: packName },
 		})
-	}
+	},
+	addCard(cardsPack_id: string) {
+		return instance.post(cardsServerEndpoints.card, {
+			card: {
+				cardsPack_id,
+			},
+		})
+	},
 }

@@ -51,6 +51,18 @@ export const addNewPack =
 			dispatch(getPacksTC(paramsForGettingPack))
 		} catch (e) {}
 	}
+export const updatePackName =
+	(
+		packId: string,
+		packName: string,
+		paramsForGettingPack: { pageCount: number }
+	): AppThunk =>
+	async dispatch => {
+		try {
+			await cardsPacksAPI.updatePackName(packId, packName)
+			dispatch(getPacksTC(paramsForGettingPack))
+		} catch (e) {}
+	}
 export const deletePack =
 	(packId: string, paramsForGettingPack: { pageCount: number }): AppThunk =>
 	async dispatch => {
@@ -60,10 +72,13 @@ export const deletePack =
 		} catch (e) {}
 	}
 
-	export const addCard = (cardsPack_id:string,paramsForGettingCards:{pageCount: number,cardsPack_id:string}) => (dispatch:any) => {
-	cardsPacksAPI
-		.addCard(cardsPack_id)
-		.then((res) => {
+export const addCard =
+	(
+		cardsPack_id: string,
+		paramsForGettingCards: { pageCount: number; cardsPack_id: string }
+	) =>
+	(dispatch: any) => {
+		cardsPacksAPI.addCard(cardsPack_id).then(res => {
 			dispatch(getCardsTC(paramsForGettingCards))
 		})
 	}

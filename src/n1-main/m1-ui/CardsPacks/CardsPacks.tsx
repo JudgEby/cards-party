@@ -5,6 +5,7 @@ import {
 	addNewPack,
 	deletePack,
 	getPacksTC,
+	updatePackName,
 } from '../../m2-bll/сardPacks-reducer'
 import { AppRootStateType } from '../../m2-bll/store'
 import { NavLink, Redirect } from 'react-router-dom'
@@ -15,7 +16,7 @@ export const CardsPacks = () => {
 	const dispatch = useDispatch()
 	const [addNewPackNameInputValue, setAddNewPackNameInputValue] = useState('')
 	const [showOnlyMyPack, setShowOnlyMyPack] = useState(false)
-	const [updateMyPackNameMode, setUpdateMyPackNameMode] = useState(true)
+	const [updateMyPackNameMode, setUpdateMyPackNameMode] = useState(false)
 	const [updateMyPackNameInputValue, setUpdateMyPackNameInputValue] =
 		useState('')
 
@@ -67,6 +68,18 @@ export const CardsPacks = () => {
 		setShowOnlyMyPack(false)
 	}
 
+	const onToggleUpdateMyPackNameMode = () => {
+		setUpdateMyPackNameMode((prevValue: boolean) => {
+			return !prevValue
+		})
+	}
+
+	const onUpdatePackNameHandler = (packId: string, packName: string) => {
+		dispatch(updatePackName(packId, packName, { pageCount: 100 }))
+		onToggleUpdateMyPackNameMode()
+		setUpdateMyPackNameInputValue('')
+	}
+
 	if (!isAuthorized) {
 		return <Redirect to={'/login'} />
 	}
@@ -116,9 +129,27 @@ export const CardsPacks = () => {
 										<>
 											{updateMyPackNameMode ? (
 												<>
-													<SuperInputText />
-													<SuperButton>Send New Name</SuperButton>
-													<SuperButton canceling>
+													<SuperInputText
+														placeholder={'enter new name'}
+														value={updateMyPackNameInputValue}
+														onChangeText={
+															setUpdateMyPackNameInputValue
+														}
+													/>
+													<SuperButton
+														onClick={() =>
+															onUpdatePackNameHandler(
+																Pack._id,
+																updateMyPackNameInputValue
+															)
+														}
+													>
+														Send New Name
+													</SuperButton>
+													<SuperButton
+														canceling
+														onClick={onToggleUpdateMyPackNameMode}
+													>
 														Cancel
 													</SuperButton>
 												</>
@@ -131,7 +162,11 @@ export const CardsPacks = () => {
 													>
 														Delete
 													</SuperButton>
-													<SuperButton>Update Name</SuperButton>
+													<SuperButton
+														onClick={onToggleUpdateMyPackNameMode}
+													>
+														Update Name
+													</SuperButton>
 												</>
 											)}
 										</>
