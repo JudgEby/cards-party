@@ -3,7 +3,7 @@ import { cardsPacksAPI } from '../m3-dal/api'
 import { AppThunk } from './store'
 
 const InitialState = {
-	cardsPacks: [],
+	cardsPacks: [] as Array<CardsPackType>,
 	cards: [],
 }
 export type InitialStateType = typeof InitialState
@@ -84,6 +84,19 @@ export const addCard =
 	}
 
 //types
+export type CardsPackType = {
+	cardsCount: 1
+	created: '2021-09-27T13:05:01.706Z'
+	name: 'Ivaaaan Fuckofff'
+	private: false
+	rating: 0
+	type: 'pack'
+	updated: '2021-09-28T14:26:58.131Z'
+	user_id: '6146317c723dff00045fb368'
+	user_name: 'В12341231'
+	_id: '6151c17da9f5a13da4d7e643'
+}
+
 export type setPacksAT = ReturnType<typeof setPacks>
 export type setCardsAT = ReturnType<typeof setCards>
 export type ActionType = setPacksAT | setCardsAT
