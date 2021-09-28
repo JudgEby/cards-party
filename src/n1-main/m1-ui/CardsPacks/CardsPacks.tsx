@@ -12,7 +12,7 @@ import { AppRootStateType } from '../../m2-bll/store'
 import { NavLink, Redirect } from 'react-router-dom'
 import SuperInputText from '../common/SuperInputText/SuperInputText'
 import SuperButton from '../common/SuperButton/SuperButton'
-import CardsListItem from './CardsListItem/CardsListItem'
+import CardsPacksListItem from './CardsPacksListItem/CardsPacksListItem'
 
 export const CardsPacks = () => {
 	const dispatch = useDispatch()
@@ -105,7 +105,7 @@ export const CardsPacks = () => {
 				</div>
 				<div className={s.PacksContainer}>
 					{CardsPacks.map((pack: any) => (
-						<CardsListItem
+						<CardsPacksListItem
 							key={pack._id}
 							pack={pack}
 							userID={userID}

@@ -11,6 +11,33 @@
     width: 100%;
     display: flex;
 }
+.addNewCardBlock {
+
+    padding: 20px 0 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+.addNewCardBlock input {
+    margin: 0;
+}
+
+.actionsWithCard {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+.addNewCardInput {
+    position: relative;
+    display: inline-block;
+    font-size: 0;
+}
+.errorSpan {
+    position: absolute;
+    top: 110%;
+    left: 15%;
+}
 
 .question, .answer, .grade, .updated, .url, .actionsWithCard {
     font-size: 30px;

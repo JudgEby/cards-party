@@ -4,19 +4,23 @@ import { AppThunk } from './store'
 
 const InitialState = {
 	cardsPacks: [] as Array<CardsPackType>,
-	cards: [],
+	cards: [] as Array<CardType>,
+	packUserId: null as string | null,
 }
 export type InitialStateType = typeof InitialState
 
 export const cardPacksReducer = (
 	state: any = InitialState,
-	action: ActionType
+	action: CardPacksActionType
 ): InitialStateType => {
 	switch (action.type) {
 		case 'SET-PACKS':
 			return { ...state, cardsPacks: action.cardsPacks }
 		case 'SET-CARDS':
-			return { ...state, cards: action.cards }
+			return { ...state, cards: action.cards, packUserId: action.packUserId }
+		case 'CLEAR-CARDS': {
+			return { ...state, cards: [], packUserId: null }
+		}
 		default:
 			return { ...state }
 	}
@@ -25,7 +29,9 @@ export const cardPacksReducer = (
 //actions
 const setPacks = (cardsPacks: any) =>
 	({ type: 'SET-PACKS', cardsPacks } as const)
-const setCards = (cards: any) => ({ type: 'SET-CARDS', cards } as const)
+const setCards = (cards: CardType, packUserId: string) =>
+	({ type: 'SET-CARDS', cards, packUserId } as const)
+const clearCards = () => ({ type: 'CLEAR-CARDS' } as const)
 
 //thunk
 export const getPacksTC = (params: any) => (dispatch: Dispatch) => {
@@ -33,11 +39,7 @@ export const getPacksTC = (params: any) => (dispatch: Dispatch) => {
 		dispatch(setPacks(res.data.cardPacks))
 	})
 }
-export const getCardsTC = (params: any) => (dispatch: Dispatch) => {
-	cardsPacksAPI.getCards(params).then(res => {
-		dispatch(setCards(res.data.cards))
-	})
-}
+
 export const addNewPack =
 	(
 		name: string,
@@ -75,13 +77,47 @@ export const deletePack =
 export const addCard =
 	(
 		cardsPack_id: string,
+		question: string,
+		answer: string,
 		paramsForGettingCards: { pageCount: number; cardsPack_id: string }
 	) =>
 	(dispatch: any) => {
-		cardsPacksAPI.addCard(cardsPack_id).then(res => {
+		cardsPacksAPI.addCard(cardsPack_id, question, answer).then(res => {
 			dispatch(getCardsTC(paramsForGettingCards))
 		})
 	}
+export const getCardsTC = (params: any) => (dispatch: Dispatch) => {
+	cardsPacksAPI.getCards(params).then(res => {
+		dispatch(setCards(res.data.cards, res.data.packUserId))
+	})
+}
+export const deleteCard =
+	(
+		cardId: string,
+		paramsForGettingCards: { pageCount: number; cardsPack_id: string }
+	): AppThunk =>
+	async dispatch => {
+		await cardsPacksAPI.deleteCard(cardId)
+		dispatch(getCardsTC(paramsForGettingCards))
+	}
+export const updateCard =
+	(
+		cardId: string,
+		question: string,
+		answer: string,
+		paramsForGettingCards: { pageCount: number; cardsPack_id: string }
+	): AppThunk =>
+	async dispatch => {
+		try {
+			await cardsPacksAPI.updateCard(cardId, question, answer)
+			dispatch(getCardsTC(paramsForGettingCards))
+		} catch (e) {}
+	}
+export const clearCardsData = (): AppThunk => async dispatch => {
+	try {
+		dispatch(clearCards())
+	} catch (e) {}
+}
 
 //types
 export type CardsPackType = {
@@ -96,7 +132,21 @@ export type CardsPackType = {
 	user_name: 'В12341231'
 	_id: '6151c17da9f5a13da4d7e643'
 }
-
+export type CardType = {
+	answer: 'no answer'
+	cardsPack_id: '615328794022038ed07f6373'
+	comments: ''
+	created: '2021-09-28T15:00:36.665Z'
+	grade: 0
+	question: 'no question'
+	rating: 0
+	shots: 0
+	type: 'card'
+	updated: '2021-09-28T15:00:36.665Z'
+	user_id: '6146317c723dff00045fb368'
+	_id: '61532e144022038ed07f6375'
+}
 export type setPacksAT = ReturnType<typeof setPacks>
 export type setCardsAT = ReturnType<typeof setCards>
-export type ActionType = setPacksAT | setCardsAT
+type ClearCards = ReturnType<typeof clearCards>
+export type CardPacksActionType = setPacksAT | setCardsAT | ClearCards

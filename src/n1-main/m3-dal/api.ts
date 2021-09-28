@@ -59,9 +59,7 @@ export const cardsPacksAPI = {
 	getPacks(params: any) {
 		return instance.get(cardsServerEndpoints.pack, { params: params })
 	},
-	getCards(params: any) {
-		return instance.get(cardsServerEndpoints.card, { params: params })
-	},
+
 	addPack(name: string, privatePack: boolean = false, deckCover: string = '') {
 		return instance.post(cardsServerEndpoints.pack, {
 			cardsPack: {
@@ -79,10 +77,27 @@ export const cardsPacksAPI = {
 			cardsPack: { _id: packId, name: packName },
 		})
 	},
-	addCard(cardsPack_id: string) {
+	getCards(params: any) {
+		return instance.get(cardsServerEndpoints.card, { params: params })
+	},
+	addCard(cardsPack_id: string, question: string, answer: string) {
 		return instance.post(cardsServerEndpoints.card, {
 			card: {
 				cardsPack_id,
+				question,
+				answer,
+			},
+		})
+	},
+	deleteCard(cardId: string) {
+		return instance.delete(`${cardsServerEndpoints.card}?id=${cardId}`)
+	},
+	updateCard(_id: string, question: string, answer: string) {
+		return instance.put(cardsServerEndpoints.card, {
+			card: {
+				_id,
+				question,
+				answer,
 			},
 		})
 	},

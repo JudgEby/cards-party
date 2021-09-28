@@ -14,7 +14,7 @@ import {
 	PasswordRecoveryActionsType,
 	passwordRecoveryReducer,
 } from './passwordRecovery-reducer'
-import { cardPacksReducer } from './сardPacks-reducer'
+import { CardPacksActionType, cardPacksReducer } from './сardPacks-reducer'
 import { AppActionsType, appReducer } from './app-reducer'
 
 const rootReducer = combineReducers({
@@ -44,6 +44,7 @@ export type AppRootActionsType =
 	| ProfileActionsType
 	| PasswordRecoveryActionsType
 	| AppActionsType
+	| CardPacksActionType
 //общий тип для всех санок
 export type AppThunk<ReturnType = void> = ThunkAction<
 	ReturnType,

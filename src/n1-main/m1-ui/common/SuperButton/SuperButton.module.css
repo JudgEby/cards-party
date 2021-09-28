@@ -9,10 +9,7 @@
     transition: .2s;
     cursor: pointer;
 }
-.common[disabled] {
-    opacity: .8;
-    cursor: none;
-}
+
 
 .default {
     color: #21268F;
@@ -26,6 +23,11 @@
 }
 .default:active {
     background-color: #81839e;
+}
+.common[disabled]  {
+    background-color: #81839e;
+    opacity: .8;
+    cursor: default;
 }
 
 
@@ -41,4 +43,9 @@
 }
 .canceling:active {
     background-color: #ff4141;
+}
+.canceling[disabled]  {
+    background-color: #ff4141;
+    opacity: .8;
+    cursor: default;
 }

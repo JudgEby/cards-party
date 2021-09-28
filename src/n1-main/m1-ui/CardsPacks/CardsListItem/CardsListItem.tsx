@@ -1,87 +1,61 @@
-import React, { useState } from 'react'
-//не добавлял отдельный файл стилей, чтобы было удобней изменять в одном файле
-import s from '../CardsPacks.module.css'
-import SuperInputText from '../../common/SuperInputText/SuperInputText'
+import React from 'react'
+import s from '../Cards/Cards.module.css'
+import { CardType, deleteCard } from '../../../m2-bll/сardPacks-reducer'
+import { useDispatch } from 'react-redux'
 import SuperButton from '../../common/SuperButton/SuperButton'
-import { NavLink } from 'react-router-dom'
-import { CardsPackType } from '../../../m2-bll/сardPacks-reducer'
 
 type PropsType = {
-	pack: CardsPackType
+	card: CardType
 	userID: string | null
-	onUpdatePackNameHandler: (
-		packId: string,
-		updateMyPackNameInputValue: string
+	onUpdateCartHandler: (
+		cardId: string,
+		cardQuestion: string,
+		cardAnswer: string
 	) => void
-	deletePackHandler: (packId: string) => void
 }
 
 const CardsListItem = (props: PropsType) => {
-	const { pack, userID, onUpdatePackNameHandler, deletePackHandler } = props
+	const { card, userID, onUpdateCartHandler } = props
+	const dispatch = useDispatch()
 
-	const [updateMyPackNameMode, setUpdateMyPackNameMode] = useState(false)
-	const [updateMyPackNameInputValue, setUpdateMyPackNameInputValue] =
-		useState('')
-
-	const onToggleUpdateMyPackNameMode = () => {
-		if (!updateMyPackNameMode) {
-			setUpdateMyPackNameInputValue(pack.name)
-		}
-		setUpdateMyPackNameMode((prevValue: boolean) => {
-			return !prevValue
-		})
+	const onDeleteCardHandler = () => {
+		dispatch(
+			deleteCard(card._id, {
+				pageCount: 100,
+				cardsPack_id: card.cardsPack_id,
+			})
+		)
 	}
-
-	const onUpdatePackName = () => {
-		onUpdatePackNameHandler(pack._id, updateMyPackNameInputValue)
-		onToggleUpdateMyPackNameMode()
-	}
-
 	return (
-		<div className={s.Pack}>
-			<div className={s.nameColumn}>{pack.name}</div>
-			<div className={s.cardsCountColumn}>{pack.cardsCount}</div>
-			<div className={s.updatedColumn}>
-				{new Date(pack.updated).toLocaleString('ru-RU')}
-			</div>
-			<div className={s.urlColumn}>some url</div>
-			<div className={s.actionsWithPackBlock}>
-				{userID && userID === pack.user_id && (
-					<>
-						{updateMyPackNameMode ? (
-							<>
-								<SuperInputText
-									placeholder={'enter new name'}
-									value={updateMyPackNameInputValue}
-									onChangeText={setUpdateMyPackNameInputValue}
-								/>
-								<SuperButton onClick={onUpdatePackName}>
-									Send New Name
-								</SuperButton>
-								<SuperButton
-									canceling
-									onClick={onToggleUpdateMyPackNameMode}
-								>
-									Cancel
-								</SuperButton>
-							</>
-						) : (
-							<>
-								<SuperButton
-									onClick={() => {
-										deletePackHandler(pack._id)
-									}}
-								>
-									Delete
-								</SuperButton>
-								<SuperButton onClick={onToggleUpdateMyPackNameMode}>
-									Update Name
-								</SuperButton>
-							</>
-						)}
-					</>
+		<div>
+			<div className={s.Card}>
+				<div className={s.question}>{card.question}</div>
+				<div className={s.answer}>{card.answer}</div>
+				<div className={s.grade}>{card.grade}</div>
+				<div className={s.updated}>
+					{new Date(card.updated).toLocaleString('ru-RU')}
+				</div>
+				<div className={s.url}>some url</div>
+				{card.user_id === userID ? (
+					<div className={s.actionsWithCard}>
+						<SuperButton onClick={onDeleteCardHandler}>
+							Delete
+						</SuperButton>
+						<SuperButton
+							onClick={() =>
+								onUpdateCartHandler(
+									card._id,
+									card.question,
+									card.answer
+								)
+							}
+						>
+							Update
+						</SuperButton>
+					</div>
+				) : (
+					''
 				)}
-				<NavLink to={`/cards/${pack._id}`}>Cards</NavLink>
 			</div>
 		</div>
 	)
