@@ -72,7 +72,7 @@ const App = () => {
 					/>
 					<Route exact path={'/test'} render={() => <Test />} />
 					<Route path={'/packs'} render={() => <CardsPacks />} />
-					<Route path={`/cards/:CardsPackID?`} render={() => <Cards />} />
+					<Route path={`/cards/:cardsPackID?`} render={() => <Cards />} />
 					<Redirect from={'*'} to={'/404'} />
 				</Switch>
 			</div>

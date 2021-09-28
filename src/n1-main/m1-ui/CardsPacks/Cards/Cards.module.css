@@ -11,3 +11,26 @@
     width: 100%;
     display: flex;
 }
+
+.question, .answer, .grade, .updated, .url, .actionsWithCard {
+    font-size: 30px;
+}
+
+.question {
+    min-width: 20%
+}
+.answer {
+    min-width: 20%
+}
+.grade {
+    min-width: 10%
+}
+.updated {
+    min-width: 20%
+}
+.url {
+    min-width: 10%
+}
+.actionsWithCard {
+    min-width: 20%
+}

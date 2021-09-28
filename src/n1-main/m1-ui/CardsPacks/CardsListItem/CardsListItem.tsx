@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+//не добавлял отдельный файл стилей, чтобы было удобней изменять в одном файле
 import s from '../CardsPacks.module.css'
 import SuperInputText from '../../common/SuperInputText/SuperInputText'
 import SuperButton from '../../common/SuperButton/SuperButton'

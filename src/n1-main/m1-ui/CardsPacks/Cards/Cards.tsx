@@ -6,12 +6,12 @@ import { addCard, getCardsTC } from '../../../m2-bll/сardPacks-reducer'
 import { AppRootStateType } from '../../../m2-bll/store'
 
 export const Cards = () => {
-	const { CardsPackID } = useParams<{ CardsPackID: string }>()
+	const { cardsPackID } = useParams<{ cardsPackID: string }>()
 
 	const dispatch = useDispatch()
 
 	useEffect(() => {
-		dispatch(getCardsTC({ cardsPack_id: CardsPackID, pageCount: 100 }))
+		dispatch(getCardsTC({ cardsPack_id: cardsPackID, pageCount: 100 }))
 	}, [])
 
 	const cards = useSelector<AppRootStateType, any>(
@@ -29,21 +29,22 @@ export const Cards = () => {
 		return <Redirect to={'/login'} />
 	}
 
-
 	const AddCard = () => {
-		dispatch(addCard(CardsPackID,{pageCount:100,cardsPack_id:CardsPackID}))
+		dispatch(
+			addCard(cardsPackID, { pageCount: 100, cardsPack_id: cardsPackID })
+		)
 	}
 
 	return (
 		<div className={s.CardsContainer}>
 			<div className={s.Cards}>
 				<div className={s.CardsParams}>
-					<div style={{ width: '16%', fontSize: 30 }}>Question</div>
-					<div style={{ width: '16%', fontSize: 30 }}>Answer</div>
-					<div style={{ width: '16%', fontSize: 30 }}>Grade</div>
-					<div style={{ width: '16%', fontSize: 30 }}>Updated</div>
-					<div style={{ width: '16%', fontSize: 30 }}>URL</div>
-					<div style={{ width: '16%', fontSize: 30 }}>
+					<div className={s.question}>Question</div>
+					<div className={s.answer}>Answer</div>
+					<div className={s.grade}>Grade</div>
+					<div className={s.updated}>Updated</div>
+					<div className={s.url}>URL</div>
+					<div className={s.actionsWithCard}>
 						<button onClick={AddCard}>Add</button>
 					</div>
 				</div>
@@ -51,27 +52,21 @@ export const Cards = () => {
 					{cards.map((card: any) => {
 						return (
 							<div className={s.Card}>
-								<div style={{ width: '16%', fontSize: 30 }}>
-									{card.question}
-								</div>
-								<div style={{ width: '16%', fontSize: 30 }}>
-									{card.answer}
-								</div>
-								<div style={{ width: '16%', fontSize: 30 }}>
-									{card.grade}
-								</div>
-								<div style={{ width: '16%', fontSize: 30 }}>
+								<div className={s.question}>{card.question}</div>
+								<div className={s.answer}>{card.answer}</div>
+								<div className={s.grade}>{card.grade}</div>
+								<div className={s.updated}>
 									{new Date(card.updated).toLocaleString('ru-RU')}
 								</div>
-								<div style={{ width: '16%', fontSize: 30 }}></div>
-								{card.user_id === userID
-									?
-									<div>
+								<div className={s.url}></div>
+								{card.user_id === userID ? (
+									<div className={s.actionsWithCard}>
 										<button>Delete</button>
 										<button>Update</button>
 									</div>
-								:''}
-
+								) : (
+									''
+								)}
 							</div>
 						)
 					})}
