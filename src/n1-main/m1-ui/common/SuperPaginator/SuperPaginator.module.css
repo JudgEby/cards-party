@@ -1,0 +1,15 @@
+.pageNumber {
+	display: inline-block;
+	padding: 5px;
+	margin: 0 5px;
+	border: 1px solid black;
+}
+
+.pageNumber:hover {
+	cursor: pointer;
+}
+
+.selectedPage {
+	font-weight: bold;
+	font-size: 30px;
+}

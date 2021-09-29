@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 //не добавлял отдельный файл стилей, чтобы было удобней изменять в одном файле
 import s from '../Packs.module.css'
-import SuperInputText from '../../common/SuperInputText/SuperInputText'
-import SuperButton from '../../common/SuperButton/SuperButton'
+import SuperInputText from '../../../n1-main/m1-ui/common/SuperInputText/SuperInputText'
+import SuperButton from '../../../n1-main/m1-ui/common/SuperButton/SuperButton'
 import { NavLink } from 'react-router-dom'
-import { CardsPackType } from '../../../m2-bll/packs-reducer'
+import { CardsPackType } from '../../../n1-main/m2-bll/packs-reducer'
 
 type PropsType = {
 	pack: CardsPackType

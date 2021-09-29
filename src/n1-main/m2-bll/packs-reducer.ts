@@ -1,4 +1,3 @@
-import { Dispatch } from 'redux'
 import { cardsPacksAPI } from '../m3-dal/api'
 import { AppThunk } from './store'
 
@@ -8,8 +7,9 @@ const InitialState = {
 	maxCardsCount: 1000,
 	minCardsCount: 0,
 	page: 1,
-	pageCount: 10,
-	sortPacks: '',
+	pageCount: 20,
+	sortPacks: 0,
+	packName: '',
 }
 export type InitialStateType = typeof InitialState
 
@@ -20,6 +20,9 @@ export const packsReducer = (
 	switch (action.type) {
 		case 'SET-PACKS':
 			return { ...state, packs: action.packs }
+		case 'PACKS/SET-GET-PACKS-PARAMS': {
+			return { ...state, ...action.payload }
+		}
 		default:
 			return { ...state }
 	}
@@ -27,45 +30,87 @@ export const packsReducer = (
 
 //actions
 const setPacks = (packs: any) => ({ type: 'SET-PACKS', packs } as const)
+const setGetPacksParams = (params: {
+	maxCardsCount?: number
+	minCardsCount?: number
+	page?: number
+	pageCount?: number
+	sortPacks?: number
+	packName?: string
+}) =>
+	({
+		type: 'PACKS/SET-GET-PACKS-PARAMS',
+		payload: { ...params },
+	} as const)
 
 //thunk
-export const getPacksTC = (params: any) => (dispatch: Dispatch) => {
-	cardsPacksAPI.getPacks(params).then(res => {
-		dispatch(setPacks(res.data.cardPacks))
-	})
-}
+export const getPacksTC =
+	(user_id?: string | null): AppThunk =>
+	async (dispatch, getState) => {
+		try {
+			const {
+				pageCount,
+				packName,
+				sortPacks,
+				maxCardsCount,
+				minCardsCount,
+				page,
+			} = getState().packs
+			let params = {
+				pageCount,
+				packName,
+				sortPacks,
+				maxCardsCount,
+				minCardsCount,
+				page,
+			}
+			const resultParams = user_id ? { ...params, user_id } : params
+			const res = await cardsPacksAPI.getPacks(resultParams)
+			dispatch(setPacks(res.data.cardPacks))
+		} catch (e) {}
+	}
 
 export const addNewPack =
 	(
 		name: string,
 		privatePack: boolean = false,
-		deckCover: string = '',
-		paramsForGettingPack: { pageCount: number }
+		deckCover: string = ''
 	): AppThunk =>
 	async dispatch => {
 		try {
 			await cardsPacksAPI.addPack(name, privatePack, deckCover)
-			dispatch(getPacksTC(paramsForGettingPack))
+			dispatch(getPacksTC())
 		} catch (e) {}
 	}
 export const updatePackName =
-	(
-		packId: string,
-		packName: string,
-		paramsForGettingPack: { pageCount: number }
-	): AppThunk =>
+	(packId: string, packName: string): AppThunk =>
 	async dispatch => {
 		try {
 			await cardsPacksAPI.updatePackName(packId, packName)
-			dispatch(getPacksTC(paramsForGettingPack))
+			dispatch(getPacksTC())
 		} catch (e) {}
 	}
 export const deletePack =
-	(packId: string, paramsForGettingPack: { pageCount: number }): AppThunk =>
+	(packId: string): AppThunk =>
 	async dispatch => {
 		try {
 			await cardsPacksAPI.deletePack(packId)
-			dispatch(getPacksTC(paramsForGettingPack))
+			dispatch(getPacksTC())
+		} catch (e) {}
+	}
+
+export const changeGetPackParams =
+	(params: {
+		maxCardsCount?: number
+		minCardsCount?: number
+		page?: number
+		pageCount?: number
+		sortPacks?: number
+		packName?: string
+	}): AppThunk =>
+	async dispatch => {
+		try {
+			dispatch(setGetPacksParams({ ...params }))
 		} catch (e) {}
 	}
 
@@ -83,4 +128,5 @@ export type CardsPackType = {
 	_id: '6151c17da9f5a13da4d7e643'
 }
 export type setPacksAT = ReturnType<typeof setPacks>
-export type PacksActionType = setPacksAT
+export type SetGetPacksParamsType = ReturnType<typeof setGetPacksParams>
+export type PacksActionType = setPacksAT | SetGetPacksParamsType

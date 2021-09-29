@@ -7,30 +7,20 @@ import {
 	deletePack,
 	getPacksTC,
 	updatePackName,
-} from '../../m2-bll/packs-reducer'
-import { AppRootStateType } from '../../m2-bll/store'
+} from '../../n1-main/m2-bll/packs-reducer'
+import { AppRootStateType } from '../../n1-main/m2-bll/store'
 import { Redirect } from 'react-router-dom'
-import SuperInputText from '../common/SuperInputText/SuperInputText'
-import SuperButton from '../common/SuperButton/SuperButton'
-import PacksListItem from './CardsPacksListItem/PacksListItem'
+import SuperInputText from '../../n1-main/m1-ui/common/SuperInputText/SuperInputText'
+import SuperButton from '../../n1-main/m1-ui/common/SuperButton/SuperButton'
+import PacksListItem from './PacksListItem/PacksListItem'
 
 export const Packs = () => {
 	const dispatch = useDispatch()
 	const [addNewPackNameInputValue, setAddNewPackNameInputValue] = useState('')
 	const [showOnlyMyPack, setShowOnlyMyPack] = useState(false)
 
-	const getPacksWithParams = (params: {
-		user_id?: string | null
-		pageCount?: number
-		min?: number
-		max?: number
-		page?: number
-	}) => {
-		dispatch(getPacksTC({ ...params }))
-	}
-
 	useEffect(() => {
-		getPacksWithParams({ pageCount: 100 })
+		dispatch(getPacksTC())
 	}, [])
 
 	const CardsPacks = useSelector<AppRootStateType, Array<CardsPackType>>(
@@ -48,27 +38,25 @@ export const Packs = () => {
 	}, [CardsPacks])
 
 	const addNewPackHandler = () => {
-		dispatch(
-			addNewPack(addNewPackNameInputValue, false, '', { pageCount: 100 })
-		)
+		dispatch(addNewPack(addNewPackNameInputValue, false, ''))
 	}
 
 	const deletePackHandler = (packId: string) => {
-		dispatch(deletePack(packId, { pageCount: 100 }))
+		dispatch(deletePack(packId))
 	}
 
 	const getMyPacksHandler = () => {
-		getPacksWithParams({ pageCount: 100, user_id: userID })
+		dispatch(getPacksTC(userID))
 		setShowOnlyMyPack(true)
 	}
 
 	const getAllPacksHandler = () => {
-		getPacksWithParams({ pageCount: 100 })
+		dispatch(getPacksTC())
 		setShowOnlyMyPack(false)
 	}
 
 	const onUpdatePackNameHandler = (packId: string, packName: string) => {
-		dispatch(updatePackName(packId, packName, { pageCount: 100 }))
+		dispatch(updatePackName(packId, packName))
 	}
 
 	if (!isAuthorized) {

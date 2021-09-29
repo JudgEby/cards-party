@@ -1,8 +1,8 @@
 import React from 'react'
-import s from '../Cards/Cards.module.css'
-import { CardType, deleteCard } from '../../../m2-bll/сards-reducer'
+import s from '../Cards.module.css'
+import { CardType, deleteCard } from '../../../n1-main/m2-bll/сards-reducer'
 import { useDispatch } from 'react-redux'
-import SuperButton from '../../common/SuperButton/SuperButton'
+import SuperButton from '../../../n1-main/m1-ui/common/SuperButton/SuperButton'
 
 type PropsType = {
 	card: CardType

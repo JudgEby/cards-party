@@ -8,11 +8,11 @@ import {
 	clearCardsData,
 	getCardsTC,
 	updateCard,
-} from '../../../m2-bll/сards-reducer'
-import { AppRootStateType } from '../../../m2-bll/store'
-import CardsListItem from '../CardsListItem/CardsListItem'
-import SuperButton from '../../common/SuperButton/SuperButton'
-import SuperInputText from '../../common/SuperInputText/SuperInputText'
+} from '../../n1-main/m2-bll/сards-reducer'
+import { AppRootStateType } from '../../n1-main/m2-bll/store'
+import CardsListItem from './CardsListItem/CardsListItem'
+import SuperButton from '../../n1-main/m1-ui/common/SuperButton/SuperButton'
+import SuperInputText from '../../n1-main/m1-ui/common/SuperInputText/SuperInputText'
 
 export const Cards = () => {
 	const [cardQuestionTextValue, setCardQuestionTextValue] = useState('')
