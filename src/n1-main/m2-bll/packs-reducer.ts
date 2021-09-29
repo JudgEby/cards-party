@@ -31,6 +31,7 @@ export const packsReducer = (
 //actions
 const setPacks = (packs: any) => ({ type: 'SET-PACKS', packs } as const)
 const setGetPacksParams = (params: {
+	cardPacksTotalCount?: number
 	maxCardsCount?: number
 	minCardsCount?: number
 	page?: number
@@ -45,7 +46,10 @@ const setGetPacksParams = (params: {
 
 //thunk
 export const getPacksTC =
-	(user_id?: string | null): AppThunk =>
+	(
+		user_id?: string | null,
+		justSwitchedToDisplayOnlyUserPacks?: true
+	): AppThunk =>
 	async (dispatch, getState) => {
 		try {
 			const {
@@ -67,6 +71,15 @@ export const getPacksTC =
 			const resultParams = user_id ? { ...params, user_id } : params
 			const res = await cardsPacksAPI.getPacks(resultParams)
 			dispatch(setPacks(res.data.cardPacks))
+			dispatch(
+				setGetPacksParams({
+					cardPacksTotalCount: res.data.cardPacksTotalCount,
+					maxCardsCount: res.data.maxCardsCount,
+					minCardsCount: res.data.minCardsCount,
+					page: res.data.page,
+					pageCount: res.data.pageCount,
+				})
+			)
 		} catch (e) {}
 	}
 
@@ -74,12 +87,13 @@ export const addNewPack =
 	(
 		name: string,
 		privatePack: boolean = false,
-		deckCover: string = ''
+		deckCover: string = '',
+		userID?: string | null
 	): AppThunk =>
 	async dispatch => {
 		try {
 			await cardsPacksAPI.addPack(name, privatePack, deckCover)
-			dispatch(getPacksTC())
+			dispatch(getPacksTC(userID))
 		} catch (e) {}
 	}
 export const updatePackName =

@@ -13,6 +13,7 @@ import { Redirect } from 'react-router-dom'
 import SuperInputText from '../../n1-main/m1-ui/common/SuperInputText/SuperInputText'
 import SuperButton from '../../n1-main/m1-ui/common/SuperButton/SuperButton'
 import PacksListItem from './PacksListItem/PacksListItem'
+import PacksPaginator from './PacksPaginator/PacksPaginator'
 
 export const Packs = () => {
 	const dispatch = useDispatch()
@@ -38,7 +39,11 @@ export const Packs = () => {
 	}, [CardsPacks])
 
 	const addNewPackHandler = () => {
-		dispatch(addNewPack(addNewPackNameInputValue, false, ''))
+		if (showOnlyMyPack) {
+			dispatch(addNewPack(addNewPackNameInputValue, false, '', userID))
+		} else {
+			dispatch(addNewPack(addNewPackNameInputValue, false, ''))
+		}
 	}
 
 	const deletePackHandler = (packId: string) => {
@@ -46,6 +51,7 @@ export const Packs = () => {
 	}
 
 	const getMyPacksHandler = () => {
+		debugger
 		dispatch(getPacksTC(userID))
 		setShowOnlyMyPack(true)
 	}
@@ -101,6 +107,9 @@ export const Packs = () => {
 							deletePackHandler={deletePackHandler}
 						/>
 					))}
+				</div>
+				<div>
+					<PacksPaginator userId={showOnlyMyPack ? userID : null} />
 				</div>
 			</div>
 		</div>
