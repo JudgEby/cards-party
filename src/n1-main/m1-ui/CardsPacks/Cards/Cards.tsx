@@ -8,7 +8,7 @@ import {
 	clearCardsData,
 	getCardsTC,
 	updateCard,
-} from '../../../m2-bll/сardPacks-reducer'
+} from '../../../m2-bll/сards-reducer'
 import { AppRootStateType } from '../../../m2-bll/store'
 import CardsListItem from '../CardsListItem/CardsListItem'
 import SuperButton from '../../common/SuperButton/SuperButton'
@@ -38,7 +38,7 @@ export const Cards = () => {
 	}, [])
 
 	const cards = useSelector<AppRootStateType, Array<CardType>>(
-		state => state.cardsPacks.cards
+		state => state.cards.cards
 	)
 	const isAuthorized = useSelector<AppRootStateType, boolean>(
 		state => state.auth.isAuthorized
@@ -48,7 +48,7 @@ export const Cards = () => {
 		state => state.profile._id
 	)
 	const packUserId = useSelector<AppRootStateType, string | null>(
-		state => state.cardsPacks.packUserId
+		state => state.cards.packUserId
 	)
 
 	if (!isAuthorized) {

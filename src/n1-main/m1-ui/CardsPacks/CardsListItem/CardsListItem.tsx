@@ -1,6 +1,6 @@
 import React from 'react'
 import s from '../Cards/Cards.module.css'
-import { CardType, deleteCard } from '../../../m2-bll/сardPacks-reducer'
+import { CardType, deleteCard } from '../../../m2-bll/сards-reducer'
 import { useDispatch } from 'react-redux'
 import SuperButton from '../../common/SuperButton/SuperButton'
 

@@ -14,8 +14,9 @@ import {
 	PasswordRecoveryActionsType,
 	passwordRecoveryReducer,
 } from './passwordRecovery-reducer'
-import { CardPacksActionType, cardPacksReducer } from './сardPacks-reducer'
+import { cardsReducer, CardsActionType } from './сards-reducer'
 import { AppActionsType, appReducer } from './app-reducer'
+import { PacksActionType, packsReducer } from './packs-reducer'
 
 const rootReducer = combineReducers({
 	app: appReducer,
@@ -24,7 +25,8 @@ const rootReducer = combineReducers({
 	registration: registrationReducer,
 	profile: profileReducer,
 	passwordRecovery: passwordRecoveryReducer,
-	cardsPacks: cardPacksReducer,
+	cards: cardsReducer,
+	packs: packsReducer,
 })
 
 export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware))
@@ -44,7 +46,8 @@ export type AppRootActionsType =
 	| ProfileActionsType
 	| PasswordRecoveryActionsType
 	| AppActionsType
-	| CardPacksActionType
+	| CardsActionType
+	| PacksActionType
 //общий тип для всех санок
 export type AppThunk<ReturnType = void> = ThunkAction<
 	ReturnType,

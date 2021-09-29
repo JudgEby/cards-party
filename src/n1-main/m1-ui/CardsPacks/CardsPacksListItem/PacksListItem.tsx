@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 //не добавлял отдельный файл стилей, чтобы было удобней изменять в одном файле
-import s from '../CardsPacks.module.css'
+import s from '../Packs.module.css'
 import SuperInputText from '../../common/SuperInputText/SuperInputText'
 import SuperButton from '../../common/SuperButton/SuperButton'
 import { NavLink } from 'react-router-dom'
-import { CardsPackType } from '../../../m2-bll/сardPacks-reducer'
+import { CardsPackType } from '../../../m2-bll/packs-reducer'
 
 type PropsType = {
 	pack: CardsPackType
@@ -16,7 +16,7 @@ type PropsType = {
 	deletePackHandler: (packId: string) => void
 }
 
-const CardsPacksListItem = (props: PropsType) => {
+const PacksListItem = (props: PropsType) => {
 	const { pack, userID, onUpdatePackNameHandler, deletePackHandler } = props
 
 	const [updateMyPackNameMode, setUpdateMyPackNameMode] = useState(false)
@@ -87,4 +87,4 @@ const CardsPacksListItem = (props: PropsType) => {
 	)
 }
 
-export default CardsPacksListItem
+export default PacksListItem

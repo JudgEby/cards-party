@@ -9,7 +9,7 @@ import Profile from '../../../n2-features/f3-profile/Profile'
 import Error404 from '../../../n2-features/f6-404/Error404'
 import PasswordRecovery from '../../../n2-features/f4-passwordRecovery/PasswordRecovery'
 import NewPassword from '../../../n2-features/f5-newPassword/NewPassword'
-import { CardsPacks } from '../CardsPacks/CardsPacks'
+import { Packs } from '../CardsPacks/Packs'
 import { Cards } from '../CardsPacks/Cards/Cards'
 import { initializeAppTC, RequestStatusType } from '../../m2-bll/app-reducer'
 import { AppRootStateType } from '../../m2-bll/store'
@@ -71,7 +71,7 @@ const App = () => {
 						render={() => <NewPassword />}
 					/>
 					<Route exact path={'/test'} render={() => <Test />} />
-					<Route path={'/packs'} render={() => <CardsPacks />} />
+					<Route path={'/packs'} render={() => <Packs />} />
 					<Route path={`/cards/:cardsPackID?`} render={() => <Cards />} />
 					<Redirect from={'*'} to={'/404'} />
 				</Switch>

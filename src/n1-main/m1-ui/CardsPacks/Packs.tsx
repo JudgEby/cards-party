@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import s from './CardsPacks.module.css'
+import s from './Packs.module.css'
 import { useDispatch, useSelector } from 'react-redux'
 import {
 	addNewPack,
@@ -7,14 +7,14 @@ import {
 	deletePack,
 	getPacksTC,
 	updatePackName,
-} from '../../m2-bll/сardPacks-reducer'
+} from '../../m2-bll/packs-reducer'
 import { AppRootStateType } from '../../m2-bll/store'
-import { NavLink, Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import SuperInputText from '../common/SuperInputText/SuperInputText'
 import SuperButton from '../common/SuperButton/SuperButton'
-import CardsPacksListItem from './CardsPacksListItem/CardsPacksListItem'
+import PacksListItem from './CardsPacksListItem/PacksListItem'
 
-export const CardsPacks = () => {
+export const Packs = () => {
 	const dispatch = useDispatch()
 	const [addNewPackNameInputValue, setAddNewPackNameInputValue] = useState('')
 	const [showOnlyMyPack, setShowOnlyMyPack] = useState(false)
@@ -34,7 +34,7 @@ export const CardsPacks = () => {
 	}, [])
 
 	const CardsPacks = useSelector<AppRootStateType, Array<CardsPackType>>(
-		state => state.cardsPacks.cardsPacks
+		state => state.packs.packs
 	)
 	const userID = useSelector<AppRootStateType, string | null>(
 		state => state.profile._id
@@ -105,7 +105,7 @@ export const CardsPacks = () => {
 				</div>
 				<div className={s.PacksContainer}>
 					{CardsPacks.map((pack: any) => (
-						<CardsPacksListItem
+						<PacksListItem
 							key={pack._id}
 							pack={pack}
 							userID={userID}
