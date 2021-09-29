@@ -4,6 +4,12 @@ import { AppThunk } from './store'
 
 const InitialState = {
 	packs: [] as Array<CardsPackType>,
+	cardPacksTotalCount: 0,
+	maxCardsCount: 1000,
+	minCardsCount: 0,
+	page: 1,
+	pageCount: 10,
+	sortPacks: '',
 }
 export type InitialStateType = typeof InitialState
 
