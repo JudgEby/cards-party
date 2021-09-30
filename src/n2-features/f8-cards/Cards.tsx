@@ -4,10 +4,11 @@ import { Redirect, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import {
 	addCard,
-	CardType, changeGetCardsParams,
+	CardType,
+	changeGetCardsParams,
 	clearCardsData,
 	getCardsTC,
-	updateCard
+	updateCard,
 } from '../../n1-main/m2-bll/сards-reducer'
 import { AppRootStateType } from '../../n1-main/m2-bll/store'
 import CardsListItem from './CardsListItem/CardsListItem'
@@ -31,19 +32,29 @@ export const Cards = () => {
 
 	const dispatch = useDispatch()
 
-	const cardQuestion = useSelector<AppRootStateType, string>(state => state.cards.cardQuestion)
-	const cardAnswer = useSelector<AppRootStateType, string>(state => state.cards.cardAnswer)
-	const sortCards = useSelector<AppRootStateType, string>(state => state.cards.sortCards)
+	const cardQuestion = useSelector<AppRootStateType, string>(
+		state => state.cards.cardQuestion
+	)
+	const cardAnswer = useSelector<AppRootStateType, string>(
+		state => state.cards.cardAnswer
+	)
+	const sortCards = useSelector<AppRootStateType, string>(
+		state => state.cards.sortCards
+	)
 
 	useEffect(() => {
-		dispatch(getCardsTC({ cardsPack_id: cardsPackID, pageCount: 100 }))
-		return () => {
-			dispatch(clearCardsData())
+		if (cardsPackID) {
+			dispatch(getCardsTC({ cardsPack_id: cardsPackID, pageCount: 100 }))
+			return () => {
+				dispatch(clearCardsData())
+			}
 		}
 	}, [])
 
 	useEffect(() => {
-		dispatch(getCardsTC({ cardsPack_id: cardsPackID, pageCount: 100 }))
+		if (cardsPackID) {
+			dispatch(getCardsTC({ cardsPack_id: cardsPackID, pageCount: 100 }))
+		}
 	}, [cardQuestion, cardAnswer, sortCards])
 
 	const cards = useSelector<AppRootStateType, Array<CardType>>(
@@ -69,7 +80,7 @@ export const Cards = () => {
 			dispatch(
 				addCard(cardsPackID, cardQuestionTextValue, cardAnswerTextValue, {
 					pageCount: 100,
-					cardsPack_id: cardsPackID
+					cardsPack_id: cardsPackID,
 				})
 			)
 		}
@@ -81,7 +92,7 @@ export const Cards = () => {
 					cardAnswerTextValue,
 					{
 						pageCount: 100,
-						cardsPack_id: cardsPackID
+						cardsPack_id: cardsPackID,
 					}
 				)
 			)
@@ -158,10 +169,20 @@ export const Cards = () => {
 		}
 	}
 
+	if (!cardsPackID) {
+		return <Redirect to={'/packs'} />
+	}
+
 	return (
 		<div className={s.CardsContainer}>
-			<Search handler={searchCardsByQuestion} placeholder={'Search question...'} />
-			<Search handler={searchCardsByAnswer} placeholder={'Search answer...'} />
+			<Search
+				handler={searchCardsByQuestion}
+				placeholder={'Search question...'}
+			/>
+			<Search
+				handler={searchCardsByAnswer}
+				placeholder={'Search answer...'}
+			/>
 			<div>{addNewCardMode ? 'Add new card' : 'Updating Card'}</div>
 			{packUserId === userID && (
 				<div className={s.addNewCardBlock}>
@@ -209,27 +230,39 @@ export const Cards = () => {
 			)}
 			<div className={s.Cards}>
 				<div className={s.CardsParams}>
-					<div className={`${s.question} ${s.tableHeader}`} onClick={() => {
-						sortColumn('question')
-					}}>
+					<div
+						className={`${s.question} ${s.tableHeader}`}
+						onClick={() => {
+							sortColumn('question')
+						}}
+					>
 						Question
 						<span>{sortedSign('question')}</span>
 					</div>
-					<div className={`${s.answer} ${s.tableHeader}`} onClick={() => {
-						sortColumn('answer')
-					}}>
+					<div
+						className={`${s.answer} ${s.tableHeader}`}
+						onClick={() => {
+							sortColumn('answer')
+						}}
+					>
 						Answer
 						<span>{sortedSign('answer')}</span>
 					</div>
-					<div className={`${s.grade} ${s.tableHeader}`} onClick={() => {
-						sortColumn('grade')
-					}}>
+					<div
+						className={`${s.grade} ${s.tableHeader}`}
+						onClick={() => {
+							sortColumn('grade')
+						}}
+					>
 						Grade
 						<span>{sortedSign('grade')}</span>
 					</div>
-					<div className={`${s.updated} ${s.tableHeader}`} onClick={() => {
-						sortColumn('updated')
-					}}>
+					<div
+						className={`${s.updated} ${s.tableHeader}`}
+						onClick={() => {
+							sortColumn('updated')
+						}}
+					>
 						Updated
 						<span>{sortedSign('updated')}</span>
 					</div>
