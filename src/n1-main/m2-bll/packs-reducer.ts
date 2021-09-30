@@ -46,10 +46,7 @@ const setGetPacksParams = (params: {
 
 //thunk
 export const getPacksTC =
-	(
-		user_id?: string | null,
-		justSwitchedToDisplayOnlyUserPacks?: true
-	): AppThunk =>
+	(user_id?: string | null): AppThunk =>
 	async (dispatch, getState) => {
 		try {
 			const {

@@ -51,7 +51,6 @@ export const Packs = () => {
 	}
 
 	const getMyPacksHandler = () => {
-		debugger
 		dispatch(getPacksTC(userID))
 		setShowOnlyMyPack(true)
 	}
