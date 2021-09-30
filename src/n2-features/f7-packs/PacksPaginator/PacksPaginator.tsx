@@ -26,7 +26,7 @@ const PacksPaginator = (props: PacksPaginatorProps) => {
 	)
 
 	useEffect(() => {
-		dispatch(getPacksTC())
+		dispatch(getPacksTC(userId))
 	}, [currentPage])
 
 	const onPageClick = (page: number) => {
