@@ -3,10 +3,10 @@ import s from './Packs.module.css'
 import { useDispatch, useSelector } from 'react-redux'
 import {
 	addNewPack,
-	CardsPackType,
+	CardsPackType, changeGetPackParams,
 	deletePack,
 	getPacksTC,
-	updatePackName,
+	updatePackName
 } from '../../n1-main/m2-bll/packs-reducer'
 import { AppRootStateType } from '../../n1-main/m2-bll/store'
 import { Redirect } from 'react-router-dom'
@@ -14,15 +14,17 @@ import SuperInputText from '../../n1-main/m1-ui/common/SuperInputText/SuperInput
 import SuperButton from '../../n1-main/m1-ui/common/SuperButton/SuperButton'
 import PacksListItem from './PacksListItem/PacksListItem'
 import PacksPaginator from './PacksPaginator/PacksPaginator'
+import { Search } from '../../n1-main/m1-ui/common/Search/Search'
 
 export const Packs = () => {
 	const dispatch = useDispatch()
 	const [addNewPackNameInputValue, setAddNewPackNameInputValue] = useState('')
 	const [showOnlyMyPack, setShowOnlyMyPack] = useState(false)
+	const packName = useSelector<AppRootStateType, string>(state => state.packs.packName)
 
 	useEffect(() => {
 		dispatch(getPacksTC())
-	}, [])
+	}, [packName])
 
 	const CardsPacks = useSelector<AppRootStateType, Array<CardsPackType>>(
 		state => state.packs.packs
@@ -65,11 +67,17 @@ export const Packs = () => {
 		dispatch(updatePackName(packId, packName))
 	}
 
+	const searchPacksByName = (value: string) => {
+		dispatch(changeGetPackParams({ packName: value }))
+	}
+
 	if (!isAuthorized) {
 		return <Redirect to={'/login'} />
 	}
+
 	return (
 		<div className={s.CardsPacksContainer}>
+			<Search handler={searchPacksByName} placeholder={'Search...'} />
 			<div className={s.CardsPacks}>
 				<div className={s.addingNewPackBlock}>
 					{!showOnlyMyPack ? (
