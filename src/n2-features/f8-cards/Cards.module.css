@@ -61,3 +61,7 @@
 .actionsWithCard {
     min-width: 20%
 }
+
+.tableHeader {
+    cursor: pointer;
+}

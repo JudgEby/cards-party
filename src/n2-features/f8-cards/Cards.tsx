@@ -33,6 +33,7 @@ export const Cards = () => {
 
 	const cardQuestion = useSelector<AppRootStateType, string>(state => state.cards.cardQuestion)
 	const cardAnswer = useSelector<AppRootStateType, string>(state => state.cards.cardAnswer)
+	const sortCards = useSelector<AppRootStateType, string>(state => state.cards.sortCards)
 
 	useEffect(() => {
 		dispatch(getCardsTC({ cardsPack_id: cardsPackID, pageCount: 100 }))
@@ -43,7 +44,7 @@ export const Cards = () => {
 
 	useEffect(() => {
 		dispatch(getCardsTC({ cardsPack_id: cardsPackID, pageCount: 100 }))
-	}, [cardQuestion, cardAnswer])
+	}, [cardQuestion, cardAnswer, sortCards])
 
 	const cards = useSelector<AppRootStateType, Array<CardType>>(
 		state => state.cards.cards
@@ -68,7 +69,7 @@ export const Cards = () => {
 			dispatch(
 				addCard(cardsPackID, cardQuestionTextValue, cardAnswerTextValue, {
 					pageCount: 100,
-					cardsPack_id: cardsPackID,
+					cardsPack_id: cardsPackID
 				})
 			)
 		}
@@ -80,7 +81,7 @@ export const Cards = () => {
 					cardAnswerTextValue,
 					{
 						pageCount: 100,
-						cardsPack_id: cardsPackID,
+						cardsPack_id: cardsPackID
 					}
 				)
 			)
@@ -139,6 +140,23 @@ export const Cards = () => {
 		dispatch(changeGetCardsParams({ cardAnswer: value }))
 	}
 
+	const sortColumn = (name: string) => {
+		if (sortCards === `0${name}`) {
+			dispatch(changeGetCardsParams({ sortCards: `1${name}` }))
+		} else {
+			dispatch(changeGetCardsParams({ sortCards: `0${name}` }))
+		}
+	}
+
+	const sortedSign = (name: string) => {
+		if (sortCards.slice(1) !== name) {
+			return `\u21C5`
+		} else if (sortCards.slice(0, 1) === '0') {
+			return `\u25BC`
+		} else {
+			return '\u25B2'
+		}
+	}
 
 	return (
 		<div className={s.CardsContainer}>
@@ -191,10 +209,30 @@ export const Cards = () => {
 			)}
 			<div className={s.Cards}>
 				<div className={s.CardsParams}>
-					<div className={s.question}>Question</div>
-					<div className={s.answer}>Answer</div>
-					<div className={s.grade}>Grade</div>
-					<div className={s.updated}>Updated</div>
+					<div className={`${s.question} ${s.tableHeader}`} onClick={() => {
+						sortColumn('question')
+					}}>
+						Question
+						<span>{sortedSign('question')}</span>
+					</div>
+					<div className={`${s.answer} ${s.tableHeader}`} onClick={() => {
+						sortColumn('answer')
+					}}>
+						Answer
+						<span>{sortedSign('answer')}</span>
+					</div>
+					<div className={`${s.grade} ${s.tableHeader}`} onClick={() => {
+						sortColumn('grade')
+					}}>
+						Grade
+						<span>{sortedSign('grade')}</span>
+					</div>
+					<div className={`${s.updated} ${s.tableHeader}`} onClick={() => {
+						sortColumn('updated')
+					}}>
+						Updated
+						<span>{sortedSign('updated')}</span>
+					</div>
 					<div className={s.url}>URL</div>
 					<div className={s.actionsWithCard}>Actions</div>
 				</div>

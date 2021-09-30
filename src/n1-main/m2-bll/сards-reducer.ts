@@ -7,6 +7,7 @@ const InitialState = {
 	packUserId: null as string | null,
 	cardAnswer: '',
 	cardQuestion: '',
+	sortCards: '0updated',
 }
 export type InitialStateType = typeof InitialState
 
@@ -35,6 +36,7 @@ const clearCards = () => ({ type: 'CLEAR-CARDS' } as const)
 const setGetCardsParams = (params: {
 	cardAnswer?: string
 	cardQuestion?: string
+	sortCards?: string
 }) =>
 	({
 		type: 'CARDS/SET-GET-CARDS-PARAMS',
@@ -59,6 +61,7 @@ export const getCardsTC = (params: any) => (dispatch: Dispatch, getState: () => 
 	const {cards} = getState()
 	params.cardQuestion = cards.cardQuestion
 	params.cardAnswer = cards.cardAnswer
+	params.sortCards = cards.sortCards
 	cardsPacksAPI.getCards(params).then(res => {
 		dispatch(setCards(res.data.cards, res.data.packUserId))
 	})
@@ -94,6 +97,7 @@ export const changeGetCardsParams =
 	(params: {
 		cardAnswer?: string
 		cardQuestion?: string
+		sortCards?: string
 	}): AppThunk =>
 		async dispatch => {
 			try {
