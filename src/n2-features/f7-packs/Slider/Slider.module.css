@@ -1,0 +1,7 @@
+.leftRange {
+    transform: rotateY(180deg);
+}
+
+.rightRange {
+    margin-left: -5px;
+}

@@ -15,6 +15,7 @@ import SuperButton from '../../n1-main/m1-ui/common/SuperButton/SuperButton'
 import PacksListItem from './PacksListItem/PacksListItem'
 import PacksPaginator from './PacksPaginator/PacksPaginator'
 import { Search } from '../../n1-main/m1-ui/common/Search/Search'
+import { Slider } from './Slider/Slider'
 
 export const Packs = () => {
 	const dispatch = useDispatch()
@@ -77,6 +78,7 @@ export const Packs = () => {
 
 	return (
 		<div className={s.CardsPacksContainer}>
+			<Slider min={0} max={100} onChange={(value) => console.log(value)} />
 			<Search handler={searchPacksByName} placeholder={'Search...'} />
 			<div className={s.CardsPacks}>
 				<div className={s.addingNewPackBlock}>
