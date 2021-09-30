@@ -4,15 +4,16 @@ import { Redirect, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import {
 	addCard,
-	CardType,
+	CardType, changeGetCardsParams,
 	clearCardsData,
 	getCardsTC,
-	updateCard,
+	updateCard
 } from '../../n1-main/m2-bll/сards-reducer'
 import { AppRootStateType } from '../../n1-main/m2-bll/store'
 import CardsListItem from './CardsListItem/CardsListItem'
 import SuperButton from '../../n1-main/m1-ui/common/SuperButton/SuperButton'
 import SuperInputText from '../../n1-main/m1-ui/common/SuperInputText/SuperInputText'
+import { Search } from '../../n1-main/m1-ui/common/Search/Search'
 
 export const Cards = () => {
 	const [cardQuestionTextValue, setCardQuestionTextValue] = useState('')
@@ -30,12 +31,19 @@ export const Cards = () => {
 
 	const dispatch = useDispatch()
 
+	const cardQuestion = useSelector<AppRootStateType, string>(state => state.cards.cardQuestion)
+	const cardAnswer = useSelector<AppRootStateType, string>(state => state.cards.cardAnswer)
+
 	useEffect(() => {
 		dispatch(getCardsTC({ cardsPack_id: cardsPackID, pageCount: 100 }))
 		return () => {
 			dispatch(clearCardsData())
 		}
 	}, [])
+
+	useEffect(() => {
+		dispatch(getCardsTC({ cardsPack_id: cardsPackID, pageCount: 100 }))
+	}, [cardQuestion, cardAnswer])
 
 	const cards = useSelector<AppRootStateType, Array<CardType>>(
 		state => state.cards.cards
@@ -124,8 +132,18 @@ export const Cards = () => {
 		setCardAnswerTextValue(value)
 	}
 
+	const searchCardsByQuestion = (value: string) => {
+		dispatch(changeGetCardsParams({ cardQuestion: value }))
+	}
+	const searchCardsByAnswer = (value: string) => {
+		dispatch(changeGetCardsParams({ cardAnswer: value }))
+	}
+
+
 	return (
 		<div className={s.CardsContainer}>
+			<Search handler={searchCardsByQuestion} placeholder={'Search question...'} />
+			<Search handler={searchCardsByAnswer} placeholder={'Search answer...'} />
 			<div>{addNewCardMode ? 'Add new card' : 'Updating Card'}</div>
 			{packUserId === userID && (
 				<div className={s.addNewCardBlock}>

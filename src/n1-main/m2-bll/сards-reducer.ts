@@ -1,10 +1,12 @@
 import { Dispatch } from 'redux'
 import { cardsPacksAPI } from '../m3-dal/api'
-import { AppThunk } from './store'
+import { AppRootStateType, AppThunk } from './store'
 
 const InitialState = {
 	cards: [] as Array<CardType>,
 	packUserId: null as string | null,
+	cardAnswer: '',
+	cardQuestion: '',
 }
 export type InitialStateType = typeof InitialState
 
@@ -18,6 +20,9 @@ export const cardsReducer = (
 		case 'CLEAR-CARDS': {
 			return { ...state, cards: [], packUserId: null }
 		}
+		case 'CARDS/SET-GET-CARDS-PARAMS': {
+			return { ...state, ...action.payload }
+		}
 		default:
 			return { ...state }
 	}
@@ -27,6 +32,14 @@ export const cardsReducer = (
 const setCards = (cards: CardType, packUserId: string) =>
 	({ type: 'SET-CARDS', cards, packUserId } as const)
 const clearCards = () => ({ type: 'CLEAR-CARDS' } as const)
+const setGetCardsParams = (params: {
+	cardAnswer?: string
+	cardQuestion?: string
+}) =>
+	({
+		type: 'CARDS/SET-GET-CARDS-PARAMS',
+		payload: { ...params }
+	} as const)
 
 //thunk
 
@@ -37,12 +50,15 @@ export const addCard =
 		answer: string,
 		paramsForGettingCards: { pageCount: number; cardsPack_id: string }
 	) =>
-	(dispatch: any) => {
-		cardsPacksAPI.addCard(cardsPack_id, question, answer).then(res => {
-			dispatch(getCardsTC(paramsForGettingCards))
-		})
-	}
-export const getCardsTC = (params: any) => (dispatch: Dispatch) => {
+		(dispatch: any) => {
+			cardsPacksAPI.addCard(cardsPack_id, question, answer).then(res => {
+				dispatch(getCardsTC(paramsForGettingCards))
+			})
+		}
+export const getCardsTC = (params: any) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
+	const {cards} = getState()
+	params.cardQuestion = cards.cardQuestion
+	params.cardAnswer = cards.cardAnswer
 	cardsPacksAPI.getCards(params).then(res => {
 		dispatch(setCards(res.data.cards, res.data.packUserId))
 	})
@@ -74,6 +90,18 @@ export const clearCardsData = (): AppThunk => async dispatch => {
 		dispatch(clearCards())
 	} catch (e) {}
 }
+export const changeGetCardsParams =
+	(params: {
+		cardAnswer?: string
+		cardQuestion?: string
+	}): AppThunk =>
+		async dispatch => {
+			try {
+				dispatch(setGetCardsParams({ ...params }))
+			} catch (e) {
+			}
+		}
+
 
 //types
 
@@ -93,4 +121,5 @@ export type CardType = {
 }
 export type setCardsAT = ReturnType<typeof setCards>
 type ClearCards = ReturnType<typeof clearCards>
-export type CardsActionType = setCardsAT | ClearCards
+type SetGetCardsParamsAT = ReturnType<typeof setGetCardsParams>
+export type CardsActionType = setCardsAT | ClearCards | SetGetCardsParamsAT
