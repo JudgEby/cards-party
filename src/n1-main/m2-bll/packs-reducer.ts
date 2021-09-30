@@ -8,7 +8,7 @@ const InitialState = {
 	minCardsCount: 0,
 	page: 1,
 	pageCount: 20,
-	sortPacks: 0,
+	sortPacks: '0updated',
 	packName: '',
 }
 export type InitialStateType = typeof InitialState
@@ -36,7 +36,7 @@ const setGetPacksParams = (params: {
 	minCardsCount?: number
 	page?: number
 	pageCount?: number
-	sortPacks?: number
+	sortPacks?: string
 	packName?: string
 }) =>
 	({
@@ -119,7 +119,7 @@ export const changeGetPackParams =
 		minCardsCount?: number
 		page?: number
 		pageCount?: number
-		sortPacks?: number
+		sortPacks?: string
 		packName?: string
 	}): AppThunk =>
 	async dispatch => {

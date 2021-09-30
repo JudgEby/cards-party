@@ -22,10 +22,11 @@ export const Packs = () => {
 	const [addNewPackNameInputValue, setAddNewPackNameInputValue] = useState('')
 	const [showOnlyMyPack, setShowOnlyMyPack] = useState(false)
 	const packName = useSelector<AppRootStateType, string>(state => state.packs.packName)
+	const sortPacks = useSelector<AppRootStateType, string>(state => state.packs.sortPacks)
 
 	useEffect(() => {
 		dispatch(getPacksTC())
-	}, [packName])
+	}, [packName, sortPacks])
 
 	const CardsPacks = useSelector<AppRootStateType, Array<CardsPackType>>(
 		state => state.packs.packs
@@ -72,6 +73,25 @@ export const Packs = () => {
 		dispatch(changeGetPackParams({ packName: value }))
 	}
 
+	const sortColumn = (name: string) => {
+		if (sortPacks === `0${name}`) {
+			dispatch(changeGetPackParams({ sortPacks: `1${name}` }))
+		} else {
+			dispatch(changeGetPackParams({ sortPacks: `0${name}` }))
+		}
+	}
+
+	const sortedSign = (name: string) => {
+		if (sortPacks.slice(1) !== name) {
+			return `\u21C5`
+		} else if (sortPacks.slice(0, 1) === '0') {
+			return `\u25BC`
+		} else {
+			return '\u25B2'
+		}
+	}
+
+
 	if (!isAuthorized) {
 		return <Redirect to={'/login'} />
 	}
@@ -101,9 +121,24 @@ export const Packs = () => {
 					</SuperButton>
 				</div>
 				<div className={s.PacksParams}>
-					<div className={s.nameColumn}>Name</div>
-					<div className={s.cardsCountColumn}>CardsCount</div>
-					<div className={s.updatedColumn}>Updated</div>
+					<div className={`${s.nameColumn} ${s.tableHeader}`} onClick={() => {
+						sortColumn('name')
+					}}>
+						Name
+						<span>{sortedSign('name')}</span>
+					</div>
+					<div className={`${s.cardsCountColumn} ${s.tableHeader}`} onClick={() => {
+						sortColumn('cardsCount')
+					}}>
+						CardsCount
+						<span>{sortedSign('cardsCount')}</span>
+					</div>
+					<div className={`${s.updatedColumn} ${s.tableHeader}`} onClick={() => {
+						sortColumn('updated')
+					}}>
+						Updated
+						<span>{sortedSign('updated')}</span>
+					</div>
 					<div className={s.urlColumn}>Url</div>
 					<div className={s.cardsColumn}>Cards</div>
 				</div>

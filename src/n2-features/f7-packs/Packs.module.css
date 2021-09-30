@@ -47,6 +47,10 @@
     font-size: 30px;
 }
 
+.tableHeader {
+    cursor: pointer;
+}
+
 .nameColumn {
     min-width: 20%
 }
