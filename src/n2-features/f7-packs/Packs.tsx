@@ -3,10 +3,11 @@ import s from './Packs.module.css'
 import { useDispatch, useSelector } from 'react-redux'
 import {
 	addNewPack,
-	CardsPackType, changeGetPackParams,
+	CardsPackType,
+	changeGetPackParams,
 	deletePack,
 	getPacksTC,
-	updatePackName
+	updatePackName,
 } from '../../n1-main/m2-bll/packs-reducer'
 import { AppRootStateType } from '../../n1-main/m2-bll/store'
 import { Redirect } from 'react-router-dom'
@@ -21,12 +22,12 @@ export const Packs = () => {
 	const dispatch = useDispatch()
 	const [addNewPackNameInputValue, setAddNewPackNameInputValue] = useState('')
 	const [showOnlyMyPack, setShowOnlyMyPack] = useState(false)
-	const packName = useSelector<AppRootStateType, string>(state => state.packs.packName)
-	const sortPacks = useSelector<AppRootStateType, string>(state => state.packs.sortPacks)
-
-	useEffect(() => {
-		dispatch(getPacksTC())
-	}, [packName, sortPacks])
+	const packName = useSelector<AppRootStateType, string>(
+		state => state.packs.packName
+	)
+	const sortPacks = useSelector<AppRootStateType, string>(
+		state => state.packs.sortPacks
+	)
 
 	const CardsPacks = useSelector<AppRootStateType, Array<CardsPackType>>(
 		state => state.packs.packs
@@ -39,7 +40,17 @@ export const Packs = () => {
 	)
 
 	useEffect(() => {
-		setAddNewPackNameInputValue('')
+		if (isAuthorized) {
+			//определяем, передавать ли ID пользователя в зависимости от того, показывать ли все паки или только пользователя
+			const userIDForGettingPacks = showOnlyMyPack ? userID : null
+			dispatch(getPacksTC(userIDForGettingPacks))
+		}
+	}, [packName, sortPacks])
+
+	useEffect(() => {
+		if (isAuthorized) {
+			setAddNewPackNameInputValue('')
+		}
 	}, [CardsPacks])
 
 	const addNewPackHandler = () => {
@@ -90,14 +101,13 @@ export const Packs = () => {
 		}
 	}
 
-
 	if (!isAuthorized) {
 		return <Redirect to={'/login'} />
 	}
 
 	return (
 		<div className={s.CardsPacksContainer}>
-			<Slider min={0} max={100} onChange={(value) => console.log(value)} />
+			<Slider min={0} max={100} onChange={value => console.log(value)} />
 			<Search handler={searchPacksByName} placeholder={'Search...'} />
 			<div className={s.CardsPacks}>
 				<div className={s.addingNewPackBlock}>
@@ -120,21 +130,30 @@ export const Packs = () => {
 					</SuperButton>
 				</div>
 				<div className={s.PacksParams}>
-					<div className={`${s.nameColumn} ${s.tableHeader}`} onClick={() => {
-						sortColumn('name')
-					}}>
+					<div
+						className={`${s.nameColumn} ${s.tableHeader}`}
+						onClick={() => {
+							sortColumn('name')
+						}}
+					>
 						Name
 						<span>{sortedSign('name')}</span>
 					</div>
-					<div className={`${s.cardsCountColumn} ${s.tableHeader}`} onClick={() => {
-						sortColumn('cardsCount')
-					}}>
+					<div
+						className={`${s.cardsCountColumn} ${s.tableHeader}`}
+						onClick={() => {
+							sortColumn('cardsCount')
+						}}
+					>
 						CardsCount
 						<span>{sortedSign('cardsCount')}</span>
 					</div>
-					<div className={`${s.updatedColumn} ${s.tableHeader}`} onClick={() => {
-						sortColumn('updated')
-					}}>
+					<div
+						className={`${s.updatedColumn} ${s.tableHeader}`}
+						onClick={() => {
+							sortColumn('updated')
+						}}
+					>
 						Updated
 						<span>{sortedSign('updated')}</span>
 					</div>
