@@ -2,12 +2,12 @@ import axios from 'axios'
 import { loginDataType } from '../m2-bll/auth-reducer'
 import { authServerEndpoints, cardsServerEndpoints } from './endpoints'
 
-const instance2 = axios.create({
+const instance = axios.create({
 	baseURL: 'http://localhost:7542/2.0/',
 	withCredentials: true,
 })
 
-const instance = axios.create({
+const instance2 = axios.create({
 	baseURL: 'https://neko-back.herokuapp.com/2.0/',
 	withCredentials: true,
 })
@@ -36,7 +36,7 @@ export const authAPI = {
 			{
 				email,
 				from: 'Best of the best',
-				message: `<div style='background-color: lime; padding: 15px'>password recovery link: <a href=${linkInRecoverEmailToGithubPages}>link</a></div>`,
+				message: `<div style='background-color: lime; padding: 15px'>password recovery link: <a href=${linkInRecoverEmailToLocal}>link</a></div>`,
 			},
 			{ withCredentials: true }
 		)
