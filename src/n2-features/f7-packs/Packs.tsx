@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import s from './Packs.module.css'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -17,11 +17,13 @@ import PacksListItem from './PacksListItem/PacksListItem'
 import PacksPaginator from './PacksPaginator/PacksPaginator'
 import { Search } from '../../n1-main/m1-ui/common/Search/Search'
 import { Slider } from './Slider/Slider'
+import Modal from '../../n1-main/m1-ui/common/Modal/Modal'
 
 export const Packs = () => {
 	const dispatch = useDispatch()
 	const [addNewPackNameInputValue, setAddNewPackNameInputValue] = useState('')
 	const [showOnlyMyPack, setShowOnlyMyPack] = useState(false)
+	const [showModal,setShowModal] = useState(false)
 	const packName = useSelector<AppRootStateType, string>(
 		state => state.packs.packName
 	)
@@ -53,11 +55,17 @@ export const Packs = () => {
 		}
 	}, [CardsPacks])
 
+	const showAddModal = () => {
+		setShowModal(true)
+	}
+
 	const addNewPackHandler = () => {
 		if (showOnlyMyPack) {
 			dispatch(addNewPack(addNewPackNameInputValue, false, '', userID))
+			setShowModal(false)
 		} else {
 			dispatch(addNewPack(addNewPackNameInputValue, false, ''))
+			setShowModal(false)
 		}
 	}
 
@@ -77,6 +85,10 @@ export const Packs = () => {
 
 	const onUpdatePackNameHandler = (packId: string, packName: string) => {
 		dispatch(updatePackName(packId, packName))
+	}
+
+	const onModalChange = (e:ChangeEvent<HTMLInputElement>) => {
+		setAddNewPackNameInputValue(e.currentTarget.value)
 	}
 
 	const searchPacksByName = (value: string) => {
@@ -105,6 +117,13 @@ export const Packs = () => {
 		return <Redirect to={'/login'} />
 	}
 
+	if(showModal){
+		return <Modal OnBackClick={() => setShowModal(false)}>
+			<input onChange={onModalChange} />
+			<button onClick={addNewPackHandler}>Add</button>
+		</Modal>
+	}
+
 	return (
 		<div className={s.CardsPacksContainer}>
 			<Slider min={0} max={100} onChange={value => console.log(value)} />
@@ -120,12 +139,7 @@ export const Packs = () => {
 							Show All Packs
 						</SuperButton>
 					)}
-					<SuperInputText
-						placeholder={'enter new pack name'}
-						onChangeText={setAddNewPackNameInputValue}
-						value={addNewPackNameInputValue}
-					/>
-					<SuperButton onClick={addNewPackHandler}>
+					<SuperButton onClick={showAddModal}>
 						Add New Pack
 					</SuperButton>
 				</div>
