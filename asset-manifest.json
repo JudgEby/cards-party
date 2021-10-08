@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/cards-party/static/css/main.3878a649.chunk.css",
-    "main.js": "/cards-party/static/js/main.a953ddb7.chunk.js",
-    "main.js.map": "/cards-party/static/js/main.a953ddb7.chunk.js.map",
+    "main.css": "/cards-party/static/css/main.6ee80f48.chunk.css",
+    "main.js": "/cards-party/static/js/main.a0fad310.chunk.js",
+    "main.js.map": "/cards-party/static/js/main.a0fad310.chunk.js.map",
     "runtime-main.js": "/cards-party/static/js/runtime-main.506f3b4e.js",
     "runtime-main.js.map": "/cards-party/static/js/runtime-main.506f3b4e.js.map",
-    "static/js/2.8f48fee2.chunk.js": "/cards-party/static/js/2.8f48fee2.chunk.js",
-    "static/js/2.8f48fee2.chunk.js.map": "/cards-party/static/js/2.8f48fee2.chunk.js.map",
+    "static/js/2.acdf5dcf.chunk.js": "/cards-party/static/js/2.acdf5dcf.chunk.js",
+    "static/js/2.acdf5dcf.chunk.js.map": "/cards-party/static/js/2.acdf5dcf.chunk.js.map",
     "index.html": "/cards-party/index.html",
-    "static/css/main.3878a649.chunk.css.map": "/cards-party/static/css/main.3878a649.chunk.css.map",
-    "static/js/2.8f48fee2.chunk.js.LICENSE.txt": "/cards-party/static/js/2.8f48fee2.chunk.js.LICENSE.txt",
+    "static/css/main.6ee80f48.chunk.css.map": "/cards-party/static/css/main.6ee80f48.chunk.css.map",
+    "static/js/2.acdf5dcf.chunk.js.LICENSE.txt": "/cards-party/static/js/2.acdf5dcf.chunk.js.LICENSE.txt",
     "static/media/edit-icon.624705dd.svg": "/cards-party/static/media/edit-icon.624705dd.svg",
     "static/media/icon-avatar.22d7f1c8.jpg": "/cards-party/static/media/icon-avatar.22d7f1c8.jpg",
     "static/media/menu.e6378079.png": "/cards-party/static/media/menu.e6378079.png"
   },
   "entrypoints": [
     "static/js/runtime-main.506f3b4e.js",
-    "static/js/2.8f48fee2.chunk.js",
-    "static/css/main.3878a649.chunk.css",
-    "static/js/main.a953ddb7.chunk.js"
+    "static/js/2.acdf5dcf.chunk.js",
+    "static/css/main.6ee80f48.chunk.css",
+    "static/js/main.a0fad310.chunk.js"
   ]
 }
