@@ -41,13 +41,17 @@ export const Packs = () => {
 		state => state.auth.isAuthorized
 	)
 
+	const currentPage = useSelector<AppRootStateType, number>(
+		state => state.packs.page
+	)
+
 	useEffect(() => {
 		if (isAuthorized) {
 			//определяем, передавать ли ID пользователя в зависимости от того, показывать ли все паки или только пользователя
 			const userIDForGettingPacks = showOnlyMyPack ? userID : null
 			dispatch(getPacksTC(userIDForGettingPacks))
 		}
-	}, [packName, sortPacks])
+	}, [packName, sortPacks, currentPage])
 
 	useEffect(() => {
 		if (isAuthorized) {

@@ -1,19 +1,14 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import SuperPaginator from '../../../n1-main/m1-ui/common/SuperPaginator/SuperPaginator'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppRootStateType } from '../../../n1-main/m2-bll/store'
-import {
-	changeGetPackParams,
-	getPacksTC,
-} from '../../../n1-main/m2-bll/packs-reducer'
+import { changeGetPackParams } from '../../../n1-main/m2-bll/packs-reducer'
 
 type PacksPaginatorProps = {
 	userId: string | null
 }
 
 const PacksPaginator = (props: PacksPaginatorProps) => {
-	const { userId } = props
-
 	const dispatch = useDispatch()
 	const pageCount = useSelector<AppRootStateType, number>(
 		state => state.packs.pageCount
@@ -24,10 +19,6 @@ const PacksPaginator = (props: PacksPaginatorProps) => {
 	const currentPage = useSelector<AppRootStateType, number>(
 		state => state.packs.page
 	)
-
-	useEffect(() => {
-		dispatch(getPacksTC(userId))
-	}, [currentPage])
 
 	const onPageClick = (page: number) => {
 		dispatch(changeGetPackParams({ page }))

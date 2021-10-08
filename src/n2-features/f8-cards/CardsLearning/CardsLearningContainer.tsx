@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Redirect, useParams } from 'react-router-dom'
 import {
 	CardType,
 	clearCardsData,
@@ -10,11 +10,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppRootStateType } from '../../../n1-main/m2-bll/store'
 import CardsLearningItem from './CardsLearningItem/CardsLearningItem'
 import styles from './CardsLearningContainer.module.css'
+import SuperButton from '../../../n1-main/m1-ui/common/SuperButton/SuperButton'
 
 const CardsLearningContainer = () => {
 	const [currentCardQuestion, setCurrentCardQuestion] = useState('')
 	const [currentCardAnswer, setCurrentCardAnswer] = useState('')
 	const [currentCardId, setCurrentCardId] = useState('')
+	const [redirectToPacks, setRedirectToPacks] = useState(false)
 
 	const maxCards = 1000
 	const dispatch = useDispatch()
@@ -59,13 +61,30 @@ const CardsLearningContainer = () => {
 		dispatch(gradeCard(cardsPackID, currentCardId, gradeNamber))
 	}
 
+	const backToPacksHandler = () => {
+		setRedirectToPacks(true)
+	}
+
+	if (redirectToPacks) {
+		return <Redirect to={'/packs'} />
+	}
+
 	return (
 		<div className={styles.container}>
-			<CardsLearningItem
-				question={currentCardQuestion}
-				answer={currentCardAnswer}
-				getNextCard={getNextCardHandler}
-			/>
+			{cards[0] ? (
+				<CardsLearningItem
+					question={currentCardQuestion}
+					answer={currentCardAnswer}
+					getNextCard={getNextCardHandler}
+				/>
+			) : (
+				<div>
+					<div>No cards in this pack</div>
+					<SuperButton onClick={backToPacksHandler}>
+						Go Back To Packs
+					</SuperButton>
+				</div>
+			)}
 		</div>
 	)
 }
