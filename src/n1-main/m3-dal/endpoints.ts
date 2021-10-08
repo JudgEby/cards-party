@@ -8,4 +8,5 @@ export const authServerEndpoints = {
 export const cardsServerEndpoints = {
 	pack: 'cards/pack',
 	card: 'cards/card',
+	grade: 'cards/grade',
 }

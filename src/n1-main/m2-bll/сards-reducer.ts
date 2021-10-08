@@ -40,7 +40,7 @@ const setGetCardsParams = (params: {
 }) =>
 	({
 		type: 'CARDS/SET-GET-CARDS-PARAMS',
-		payload: { ...params }
+		payload: { ...params },
 	} as const)
 
 //thunk
@@ -52,20 +52,21 @@ export const addCard =
 		answer: string,
 		paramsForGettingCards: { pageCount: number; cardsPack_id: string }
 	) =>
-		(dispatch: any) => {
-			cardsPacksAPI.addCard(cardsPack_id, question, answer).then(res => {
-				dispatch(getCardsTC(paramsForGettingCards))
-			})
-		}
-export const getCardsTC = (params: any) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
-	const {cards} = getState()
-	params.cardQuestion = cards.cardQuestion
-	params.cardAnswer = cards.cardAnswer
-	params.sortCards = cards.sortCards
-	cardsPacksAPI.getCards(params).then(res => {
-		dispatch(setCards(res.data.cards, res.data.packUserId))
-	})
-}
+	(dispatch: any) => {
+		cardsPacksAPI.addCard(cardsPack_id, question, answer).then(res => {
+			dispatch(getCardsTC(paramsForGettingCards))
+		})
+	}
+export const getCardsTC =
+	(params: any) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
+		const { cards } = getState()
+		params.cardQuestion = cards.cardQuestion
+		params.cardAnswer = cards.cardAnswer
+		params.sortCards = cards.sortCards
+		cardsPacksAPI.getCards(params).then(res => {
+			dispatch(setCards(res.data.cards, res.data.packUserId))
+		})
+	}
 export const deleteCard =
 	(
 		cardId: string,
@@ -99,13 +100,19 @@ export const changeGetCardsParams =
 		cardQuestion?: string
 		sortCards?: string
 	}): AppThunk =>
-		async dispatch => {
-			try {
-				dispatch(setGetCardsParams({ ...params }))
-			} catch (e) {
-			}
-		}
-
+	async dispatch => {
+		try {
+			dispatch(setGetCardsParams({ ...params }))
+		} catch (e) {}
+	}
+export const gradeCard =
+	(cardsPack_id: string, card_id: string, grade: number): AppThunk =>
+	async dispatch => {
+		try {
+			await cardsPacksAPI.gradeCard(card_id, grade)
+			dispatch(getCardsTC({ cardsPack_id }))
+		} catch (e) {}
+	}
 
 //types
 

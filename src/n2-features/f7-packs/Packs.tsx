@@ -23,7 +23,7 @@ export const Packs = () => {
 	const dispatch = useDispatch()
 	const [addNewPackNameInputValue, setAddNewPackNameInputValue] = useState('')
 	const [showOnlyMyPack, setShowOnlyMyPack] = useState(false)
-	const [showModal,setShowModal] = useState(false)
+	const [showModal, setShowModal] = useState(false)
 	const packName = useSelector<AppRootStateType, string>(
 		state => state.packs.packName
 	)
@@ -87,10 +87,6 @@ export const Packs = () => {
 		dispatch(updatePackName(packId, packName))
 	}
 
-	const onModalChange = (e:ChangeEvent<HTMLInputElement>) => {
-		setAddNewPackNameInputValue(e.currentTarget.value)
-	}
-
 	const searchPacksByName = (value: string) => {
 		dispatch(changeGetPackParams({ packName: value }))
 	}
@@ -113,19 +109,34 @@ export const Packs = () => {
 		}
 	}
 
+	const OnModalBackClick = () => {
+		setShowModal(false)
+		setAddNewPackNameInputValue('')
+	}
+
 	if (!isAuthorized) {
 		return <Redirect to={'/login'} />
 	}
 
-	if(showModal){
-		return <Modal OnBackClick={() => setShowModal(false)}>
-			<input onChange={onModalChange} />
-			<button onClick={addNewPackHandler}>Add</button>
-		</Modal>
-	}
+	// if(showModal){
+	// 	return <Modal OnBackClick={() => setShowModal(false)}>
+	// 		<input onChange={onModalChange} />
+	// 		<button onClick={addNewPackHandler}>Add</button>
+	// 	</Modal>
+	// }
 
 	return (
 		<div className={s.CardsPacksContainer}>
+			{showModal && (
+				<Modal OnBackClick={OnModalBackClick}>
+					<SuperInputText
+						value={addNewPackNameInputValue}
+						onChangeText={setAddNewPackNameInputValue}
+						className={s.addPackModalInput}
+					/>
+					<SuperButton onClick={addNewPackHandler}>Add</SuperButton>
+				</Modal>
+			)}
 			<Slider min={0} max={100} onChange={value => console.log(value)} />
 			<Search handler={searchPacksByName} placeholder={'Search...'} />
 			<div className={s.CardsPacks}>
@@ -139,9 +150,7 @@ export const Packs = () => {
 							Show All Packs
 						</SuperButton>
 					)}
-					<SuperButton onClick={showAddModal}>
-						Add New Pack
-					</SuperButton>
+					<SuperButton onClick={showAddModal}>Add New Pack</SuperButton>
 				</div>
 				<div className={s.PacksParams}>
 					<div

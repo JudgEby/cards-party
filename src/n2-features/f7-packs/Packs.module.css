@@ -21,10 +21,6 @@
     margin-bottom: 20px;
 }
 
-.addingNewPackBlock input {
-    margin: 0;
-
-}
 
 .actionsWithPackBlock {
     min-width: 40%;
@@ -35,10 +31,6 @@
     padding-right: 50px;
 }
 
-.actionsWithPackBlock input {
-    margin: 0;
-    height: 25px;
-}
 .actionsWithPackBlock a {
     font-size: 30px;
 }
@@ -65,4 +57,13 @@
 }
 .cardsColumn {
     min-width: 40%
+}
+
+.addPackModalInput {
+    margin-bottom: 20px;
+}
+
+.updatePackNameModalButtonsBlock {
+    display: flex;
+    gap: 20px;
 }

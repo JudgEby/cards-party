@@ -15,6 +15,7 @@ import CardsListItem from './CardsListItem/CardsListItem'
 import SuperButton from '../../n1-main/m1-ui/common/SuperButton/SuperButton'
 import SuperInputText from '../../n1-main/m1-ui/common/SuperInputText/SuperInputText'
 import { Search } from '../../n1-main/m1-ui/common/Search/Search'
+import Modal from '../../n1-main/m1-ui/common/Modal/Modal'
 
 export const Cards = () => {
 	const [cardQuestionTextValue, setCardQuestionTextValue] = useState('')
@@ -23,7 +24,8 @@ export const Cards = () => {
 	const [cardAnswerTextValue, setCardAnswerTextValue] = useState('')
 	const [cardAnswerValidateError, setCardAnswerValidateError] =
 		useState<undefined | string>(undefined)
-	const [addNewCardMode, setAddNewCardMode] = useState(true)
+	const [addNewCardMode, setAddNewCardMode] = useState(false)
+	const [updateCardMode, setUpdateCardMode] = useState(false)
 	const [updatingCardId, setUpdatingCardId] = useState<null | string>(null)
 
 	const minCharacterNumber = 2
@@ -83,6 +85,7 @@ export const Cards = () => {
 					cardsPack_id: cardsPackID,
 				})
 			)
+			setAddNewCardMode(false)
 		}
 		if (!addNewCardMode && updatingCardId) {
 			dispatch(
@@ -96,14 +99,17 @@ export const Cards = () => {
 					}
 				)
 			)
-			setAddNewCardMode(true)
+			setUpdateCardMode(false)
 		}
 		clearNewCardInputsText()
 	}
 	const onCancelButtonHandler = () => {
-		if (!addNewCardMode) {
-			setAddNewCardMode(true)
+		if (updateCardMode) {
+			setUpdateCardMode(false)
 			setUpdatingCardId(null)
+		}
+		if (addNewCardMode) {
+			setAddNewCardMode(false)
 		}
 		clearNewCardInputsText()
 	}
@@ -121,6 +127,7 @@ export const Cards = () => {
 		cardAnswer: string
 	) => {
 		setAddNewCardMode(false)
+		setUpdateCardMode(true)
 		setUpdatingCardId(cardId)
 		setCardQuestionTextValue(cardQuestion)
 		setCardAnswerTextValue(cardAnswer)
@@ -183,51 +190,63 @@ export const Cards = () => {
 				handler={searchCardsByAnswer}
 				placeholder={'Search answer...'}
 			/>
-			<div>{addNewCardMode ? 'Add new card' : 'Updating Card'}</div>
-			{packUserId === userID && (
-				<div className={s.addNewCardBlock}>
-					<div className={s.addNewCardInput}>
-						<SuperInputText
-							spanClassName={s.errorSpan}
-							placeholder={
-								addNewCardMode
-									? 'enter new card question'
-									: 'enter updating card question'
+			{packUserId === userID && (addNewCardMode || updateCardMode) && (
+				<Modal
+					OnBackClick={() => {
+						setAddNewCardMode(false)
+						setUpdateCardMode(false)
+					}}
+				>
+					<div className={s.addNewCardBlock}>
+						<div className={s.addNewCardInput}>
+							<SuperInputText
+								spanClassName={s.errorSpan}
+								placeholder={
+									addNewCardMode
+										? 'enter new card question'
+										: 'enter updating card question'
+								}
+								value={cardQuestionTextValue}
+								onChangeText={onCardQuestionTextValueHandler}
+								error={cardQuestionValidateError}
+							/>
+						</div>
+						<div className={s.addNewCardInput}>
+							<SuperInputText
+								spanClassName={s.errorSpan}
+								placeholder={
+									addNewCardMode
+										? 'enter new card answer'
+										: 'enter updating card answer'
+								}
+								value={cardAnswerTextValue}
+								onChangeText={onCardAnswerTextValueHandler}
+								error={cardAnswerValidateError}
+							/>
+						</div>
+						<SuperButton
+							disabled={
+								!!cardQuestionValidateError ||
+								!!cardAnswerValidateError ||
+								!cardQuestionTextValue ||
+								!cardAnswerTextValue
 							}
-							value={cardQuestionTextValue}
-							onChangeText={onCardQuestionTextValueHandler}
-							error={cardQuestionValidateError}
-						/>
+							onClick={addCardHandler}
+						>
+							{addNewCardMode ? 'Add new Card' : 'Update Card'}
+						</SuperButton>
+						<SuperButton canceling onClick={onCancelButtonHandler}>
+							Cancel
+						</SuperButton>
 					</div>
-					<div className={s.addNewCardInput}>
-						<SuperInputText
-							spanClassName={s.errorSpan}
-							placeholder={
-								addNewCardMode
-									? 'enter new card answer'
-									: 'enter updating card answer'
-							}
-							value={cardAnswerTextValue}
-							onChangeText={onCardAnswerTextValueHandler}
-							error={cardAnswerValidateError}
-						/>
-					</div>
-					<SuperButton
-						disabled={
-							!!cardQuestionValidateError ||
-							!!cardAnswerValidateError ||
-							!cardQuestionTextValue ||
-							!cardAnswerTextValue
-						}
-						onClick={addCardHandler}
-					>
-						{addNewCardMode ? 'Add new Card' : 'Update Card'}
-					</SuperButton>
-					<SuperButton canceling onClick={onCancelButtonHandler}>
-						Cancel
-					</SuperButton>
-				</div>
+				</Modal>
 			)}
+			<SuperButton
+				className={s.addNewCardMainButton}
+				onClick={() => setAddNewCardMode(true)}
+			>
+				Add New Card
+			</SuperButton>
 			<div className={s.Cards}>
 				<div className={s.CardsParams}>
 					<div

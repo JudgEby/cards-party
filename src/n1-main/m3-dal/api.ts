@@ -101,4 +101,7 @@ export const cardsPacksAPI = {
 			},
 		})
 	},
+	gradeCard(card_id: string, grade: number) {
+		return instance.put(cardsServerEndpoints.grade, { card_id, grade })
+	},
 }

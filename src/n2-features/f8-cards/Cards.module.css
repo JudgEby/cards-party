@@ -33,6 +33,10 @@
     display: inline-block;
     font-size: 0;
 }
+.addNewCardMainButton {
+    display: inline-block;
+    margin-bottom: 20px;
+}
 .errorSpan {
     position: absolute;
     top: 110%;

@@ -5,6 +5,7 @@ import SuperInputText from '../../../n1-main/m1-ui/common/SuperInputText/SuperIn
 import SuperButton from '../../../n1-main/m1-ui/common/SuperButton/SuperButton'
 import { NavLink } from 'react-router-dom'
 import { CardsPackType } from '../../../n1-main/m2-bll/packs-reducer'
+import Modal from '../../../n1-main/m1-ui/common/Modal/Modal'
 
 type PropsType = {
 	pack: CardsPackType
@@ -49,22 +50,25 @@ const PacksListItem = (props: PropsType) => {
 				{userID && userID === pack.user_id && (
 					<>
 						{updateMyPackNameMode ? (
-							<>
+							<Modal OnBackClick={onToggleUpdateMyPackNameMode}>
 								<SuperInputText
+									className={s.addPackModalInput}
 									placeholder={'enter new name'}
 									value={updateMyPackNameInputValue}
 									onChangeText={setUpdateMyPackNameInputValue}
 								/>
-								<SuperButton onClick={onUpdatePackName}>
-									Send New Name
-								</SuperButton>
-								<SuperButton
-									canceling
-									onClick={onToggleUpdateMyPackNameMode}
-								>
-									Cancel
-								</SuperButton>
-							</>
+								<div className={s.updatePackNameModalButtonsBlock}>
+									<SuperButton onClick={onUpdatePackName}>
+										Send New Name
+									</SuperButton>
+									<SuperButton
+										canceling
+										onClick={onToggleUpdateMyPackNameMode}
+									>
+										Cancel
+									</SuperButton>
+								</div>
+							</Modal>
 						) : (
 							<>
 								<SuperButton
@@ -82,6 +86,7 @@ const PacksListItem = (props: PropsType) => {
 					</>
 				)}
 				<NavLink to={`/cards/${pack._id}`}>Cards</NavLink>
+				<NavLink to={`/learn/${pack._id}`}>Learn</NavLink>
 			</div>
 		</div>
 	)

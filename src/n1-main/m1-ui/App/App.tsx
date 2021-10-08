@@ -15,6 +15,7 @@ import { initializeAppTC, RequestStatusType } from '../../m2-bll/app-reducer'
 import { AppRootStateType } from '../../m2-bll/store'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../common/Loader/Loader'
+import CardsLearningContainer from '../../../n2-features/f8-cards/CardsLearning/CardsLearningContainer'
 
 const App = () => {
 	const status = useSelector<AppRootStateType, RequestStatusType>(
@@ -73,6 +74,10 @@ const App = () => {
 					<Route exact path={'/test'} render={() => <Test />} />
 					<Route path={'/packs'} render={() => <Packs />} />
 					<Route path={`/cards/:cardsPackID?`} render={() => <Cards />} />
+					<Route
+						path={`/learn/:cardsPackID?`}
+						render={() => <CardsLearningContainer />}
+					/>
 					<Redirect from={'*'} to={'/404'} />
 				</Switch>
 			</div>
